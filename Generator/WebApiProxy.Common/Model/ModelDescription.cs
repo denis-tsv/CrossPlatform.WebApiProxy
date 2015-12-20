@@ -2,12 +2,8 @@
 
 namespace WebApiProxy.Common.Model
 {
-    public class ModelDescription
+    public class ModelDescription : BaseDescription
     {
-        public string Name { get; set; }
-
-        public string Documentation { get; set; }
-
         public bool IsValueType { get; set; }
 
         public bool IsAbstract { get; set; }

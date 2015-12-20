@@ -6,8 +6,8 @@ using WebApiProxy.Common.DataAnnotations;
 
 namespace Demo.Server.WebHost.Controllers
 {
-    
 
+    //[ProxyIgnore]
     [RoutePrefix("api/TestDeleteMethod")]
     public class TestDeleteMethodController : ApiController
     {

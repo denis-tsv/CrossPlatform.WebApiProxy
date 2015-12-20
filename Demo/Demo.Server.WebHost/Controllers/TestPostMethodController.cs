@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Demo.Model;
+﻿using System.Web.Http;
+using WebApiProxy.Common.DataAnnotations;
 
 namespace Demo.Server.WebHost.Controllers
 {
     [RoutePrefix("api/TestPostMethod")]
+    //[ProxyIgnore]
     public class TestPostMethodController : ApiController
     {
         [Route("PostX")]
@@ -19,5 +17,6 @@ namespace Demo.Server.WebHost.Controllers
         {
             return id;
         }
+        
     }
 }

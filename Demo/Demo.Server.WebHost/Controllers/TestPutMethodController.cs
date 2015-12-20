@@ -11,6 +11,7 @@ using WebApiProxy.Server.MetadataGenerator;
 namespace Demo.Server.WebHost.Controllers
 {
     [RoutePrefix("api/TestPutMethod")]
+    //[ProxyIgnore]
     public class TestPutMethodController : ApiController
     {
         private PropertiesComparer<User> _userComparer = new PropertiesComparer<User>();

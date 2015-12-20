@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Demo.Server.WebHost.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -161,8 +162,8 @@
     <Compile Include="Controllers\IgnoreController.cs" />
     <Compile Include="Controllers\IgnoreMethodController.cs" />
     <Compile Include="Controllers\NotSupportedMethodsController.cs" />
-    <Compile Include="Controllers\TestBaseController.cs" />
     <Compile Include="Controllers\TestDeleteMethodController.cs" />
+    <Compile Include="Controllers\TestDocumentationController.cs" />
     <Compile Include="Controllers\TestGetMethodController.cs" />
     <Compile Include="Controllers\TestPostMethodController.cs" />
     <Compile Include="Controllers\TestPutMethodController.cs" />

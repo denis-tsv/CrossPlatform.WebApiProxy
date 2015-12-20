@@ -2,12 +2,8 @@
 
 namespace WebApiProxy.Common.Model
 {
-    public class ControllerDescription
+    public class ControllerDescription : BaseDescription
     {
-        public string Name { get; set; }
-
-        public string Documentation { get; set; }
-
         public List<MethodDescription> MethodDescription { get; set; }
     }
 }

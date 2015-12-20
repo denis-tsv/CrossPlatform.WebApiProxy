@@ -7,22 +7,22 @@ namespace Demo.Server.WebHost.Controllers
 {
     [RoutePrefix("api/TestGetMethod")]
     [ProxyIgnore]
-    public class NotSupportedMethodsController : TestBaseController
+    public class NotSupportedMethodsController : ApiController
     {
         [Route("GetWithCustomArrayParam")]
-        public string GetWithCustomArrayParam(User[] users)
+        public string GetWithCustomArrayParam([FromUri]User[] users)
         {
             return null;
         }
 
         [Route("GetWithTwoCustomArrayParam")]
-        public string GetWithTwoCustomArrayParam(User[] users, List<User> otherUsers)
+        public string GetWithTwoCustomArrayParam([FromUri]User[] users, [FromUri]List<User> otherUsers)
         {
             return null;
         }
 
         [Route("GetByDictionaryParam")]
-        public string GetByDictionaryParam(Dictionary<string, User> users)
+        public string GetByDictionaryParam([FromUri]Dictionary<string, User> users)
         {
             return null;
         }

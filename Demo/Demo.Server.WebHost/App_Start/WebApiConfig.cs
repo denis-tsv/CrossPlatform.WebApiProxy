@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.Routing;
 using WebApiProxy.Server.MetadataGenerator;
@@ -16,14 +18,14 @@ namespace Demo.Server.WebHost
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
+           
 #if DEBUG
             var route = config.Routes.CreateRoute(
                 routeTemplate: "api/meta",
                 defaults: new HttpRouteValueDictionary("route"),
                 constraints: null,
                 dataTokens: null,
-                handler: new MetadataHandler(config) { InnerHandler = new HttpControllerDispatcher(GlobalConfiguration.Configuration) });
+                handler: new WebApiDescriptionHandler(config) { InnerHandler = new HttpControllerDispatcher(config) });
             config.Routes.Add("meta", route);
 #endif
 

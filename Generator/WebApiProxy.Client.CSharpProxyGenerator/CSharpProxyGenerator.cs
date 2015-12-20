@@ -76,12 +76,15 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
         {
             var sb = new StringBuilder();
 
+            AddDocumentation(sb, enumDescription.Documentation);
+            
             sb.AppendLine($"public enum {enumDescription.Name}");
             sb.AppendLine("{");
             if (enumDescription.PropertyDescriptions != null)
             {
                 foreach (var description in enumDescription.PropertyDescriptions)
                 {
+                    AddDocumentation(sb, description.Documentation);
                     sb.Append(description.Name);
                     if (!string.IsNullOrEmpty(description.Value))
                         sb.Append($" = {description.Value}");
@@ -92,11 +95,61 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             return sb.ToString();
         }
 
+        private void AddDocumentation(StringBuilder sb, string documentation)
+        {
+            if (string.IsNullOrEmpty(documentation)) return;
+
+            sb.AppendLine("/// <summary>");
+            foreach (var documentationString in documentation.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                sb.Append("/// ");
+                sb.AppendLine(documentationString.Trim());
+            }
+
+            sb.AppendLine("/// </summary>");
+        }
+
+        private void AddMethodDocumentation(StringBuilder sb, MethodDescription methodDescription)
+        {
+            if (!string.IsNullOrEmpty(methodDescription.Documentation))
+            {
+                sb.AppendLine("/// <summary>");
+                foreach (var documentationString in methodDescription.Documentation
+                    .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    sb.Append("/// ");
+                    sb.AppendLine(documentationString.Trim());
+                }
+                sb.AppendLine("/// </summary>");
+            }
+            if (methodDescription.UrlParameterDescriptions != null)
+            {
+                foreach (var parameterDescription in methodDescription.UrlParameterDescriptions)
+                {
+                    if (!string.IsNullOrEmpty(parameterDescription.Documentation))
+                    {
+                        sb.AppendLine($"/// <param name=\"{parameterDescription.Name}\">{parameterDescription.Documentation}</param>");
+                    }
+                }
+            }
+
+            if (methodDescription.BodyParameterDescription != null && !string.IsNullOrEmpty(methodDescription.BodyParameterDescription.Documentation))
+            {
+                sb.AppendLine($"/// <param name=\"{methodDescription.BodyParameterDescription.Name}\">{methodDescription.BodyParameterDescription.Documentation}</param>");
+            }
+
+            if (!string.IsNullOrEmpty(methodDescription.ReturnDocumentation))
+            {
+                sb.AppendLine($"/// <returns>{methodDescription.ReturnDocumentation}</returns>");
+            }
+        }
+
         private string GetModel(ModelDescription modelDescription)
         {
             var sb = new StringBuilder();
 
-            //TODO Docs
+            AddDocumentation(sb, modelDescription.Documentation);
+            
             string abstractValue = modelDescription.IsAbstract ? "abstract" : "";
             string type = modelDescription.IsValueType ? "struct" : "class";
             sb.Append($"public {abstractValue} partial {type} {modelDescription.Name}");
@@ -112,7 +165,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
                 string virtualValue = modelDescription.IsValueType ? "" : "virtual";
                 foreach (var prop in modelDescription.PropertyDescriptions)
                 {
-                    //TODO Documentation
+                    AddDocumentation(sb, prop.Documentation);
 
                     sb.Append($"public {virtualValue} {prop.Type} {prop.Name} ");
                     sb.AppendLine("{ get; set; }");
@@ -350,7 +403,8 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
         {
             var sb = new StringBuilder();
 
-            //TODO documentation
+            AddDocumentation(sb, controllerDescription.Documentation);
+
             sb.AppendLine($"public interface I{controllerDescription.Name}Client");
             sb.AppendLine("{");
 
@@ -364,6 +418,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
                     }
                     else
                     {
+                        AddMethodDocumentation(sb, methodDescription);
                         var signature = GetProxyMethodSignature(methodDescription);
                         sb.Append(signature);
                         sb.AppendLine(";");

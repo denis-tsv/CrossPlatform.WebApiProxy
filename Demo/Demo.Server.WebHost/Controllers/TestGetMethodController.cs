@@ -10,9 +10,11 @@ using System.Web.Http.Description;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.Results;
 using Demo.Model;
+using WebApiProxy.Common.DataAnnotations;
 
 namespace Demo.Server.WebHost.Controllers
 {
+    //[ProxyIgnore]
     [RoutePrefix("api/TestGetMethod")]
     public class TestGetMethodController : ApiController
     {
@@ -268,6 +270,8 @@ namespace Demo.Server.WebHost.Controllers
             return Task.FromResult(res);
         }
         #endregion
+
+        //TODO Body param
 
     }
 
