@@ -4,6 +4,6 @@ namespace WebApiProxy.Common.Model
 {
     public class EnumDescription : BaseDescription
     {
-        public List<EnumPropertyDescription> PropertyDescriptions { get; set; }
+        public List<EnumPropertyDescription> PropertyDescriptions { get; set; } = new List<EnumPropertyDescription>();
     }
 }

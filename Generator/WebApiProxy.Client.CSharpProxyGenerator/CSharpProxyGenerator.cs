@@ -39,30 +39,21 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
             if (configuration.GenerateModel)
             {
-                if (webApiDescription.ModelDescriptions != null)
+                foreach (var modelDescription in webApiDescription.ModelDescriptions)
                 {
-                    foreach (var modelDescription in webApiDescription.ModelDescriptions)
-                    {
-                        sb.AppendLine(GetModel(modelDescription));
-                    }
+                    sb.AppendLine(GetModel(modelDescription));
+                }
+                foreach (var enumDescription in webApiDescription.EnumDescriptions)
+                {
+                    sb.AppendLine(GetEnum(enumDescription));
                 }
 
-                if (webApiDescription.EnumDescriptions != null)
-                {
-                    foreach (var enumDescription in webApiDescription.EnumDescriptions)
-                    {
-                        sb.AppendLine(GetEnum(enumDescription));
-                    }
-                }
             }
 
-            if (webApiDescription.ControllerDescriptions != null)
+            foreach (var controllerDescription in webApiDescription.ControllerDescriptions)
             {
-                foreach (var controllerDescription in webApiDescription.ControllerDescriptions)
-                {
-                    sb.AppendLine(GetProxyInterface(controllerDescription));
-                    sb.AppendLine(GetProxyImplementation(controllerDescription));
-                }
+                sb.AppendLine(GetProxyInterface(controllerDescription));
+                sb.AppendLine(GetProxyImplementation(controllerDescription));
             }
 
             sb.AppendLine("}");
@@ -77,20 +68,19 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             var sb = new StringBuilder();
 
             AddDocumentation(sb, enumDescription.Documentation);
-            
+
             sb.AppendLine($"public enum {enumDescription.Name}");
             sb.AppendLine("{");
-            if (enumDescription.PropertyDescriptions != null)
+
+            foreach (var description in enumDescription.PropertyDescriptions)
             {
-                foreach (var description in enumDescription.PropertyDescriptions)
-                {
-                    AddDocumentation(sb, description.Documentation);
-                    sb.Append(description.Name);
-                    if (!string.IsNullOrEmpty(description.Value))
-                        sb.Append($" = {description.Value}");
-                    sb.AppendLine(",");
-                }
+                AddDocumentation(sb, description.Documentation);
+                sb.Append(description.Name);
+                if (!string.IsNullOrEmpty(description.Value))
+                    sb.Append($" = {description.Value}");
+                sb.AppendLine(",");
             }
+
             sb.AppendLine("}");
             return sb.ToString();
         }
@@ -100,7 +90,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             if (string.IsNullOrEmpty(documentation)) return;
 
             sb.AppendLine("/// <summary>");
-            foreach (var documentationString in documentation.Split(new []{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var documentationString in documentation.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
             {
                 sb.Append("/// ");
                 sb.AppendLine(documentationString.Trim());
@@ -115,25 +105,23 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             {
                 sb.AppendLine("/// <summary>");
                 foreach (var documentationString in methodDescription.Documentation
-                    .Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+                    .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     sb.Append("/// ");
                     sb.AppendLine(documentationString.Trim());
                 }
                 sb.AppendLine("/// </summary>");
             }
-            if (methodDescription.UrlParameterDescriptions != null)
+
+            foreach (var parameterDescription in methodDescription.UrlParameterDescriptions)
             {
-                foreach (var parameterDescription in methodDescription.UrlParameterDescriptions)
+                if (!string.IsNullOrEmpty(parameterDescription.Documentation))
                 {
-                    if (!string.IsNullOrEmpty(parameterDescription.Documentation))
-                    {
-                        sb.AppendLine($"/// <param name=\"{parameterDescription.Name}\">{parameterDescription.Documentation}</param>");
-                    }
+                    sb.AppendLine($"/// <param name=\"{parameterDescription.Name}\">{parameterDescription.Documentation}</param>");
                 }
             }
 
-            if (methodDescription.BodyParameterDescription != null && !string.IsNullOrEmpty(methodDescription.BodyParameterDescription.Documentation))
+            if (!string.IsNullOrEmpty(methodDescription.BodyParameterDescription?.Documentation))
             {
                 sb.AppendLine($"/// <param name=\"{methodDescription.BodyParameterDescription.Name}\">{methodDescription.BodyParameterDescription.Documentation}</param>");
             }
@@ -149,7 +137,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             var sb = new StringBuilder();
 
             AddDocumentation(sb, modelDescription.Documentation);
-            
+
             string abstractValue = modelDescription.IsAbstract ? "abstract" : "";
             string type = modelDescription.IsValueType ? "struct" : "class";
             sb.Append($"public {abstractValue} partial {type} {modelDescription.Name}");
@@ -160,17 +148,16 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine();
 
             sb.AppendLine("{");
-            if (modelDescription.PropertyDescriptions != null)
-            {
-                string virtualValue = modelDescription.IsValueType ? "" : "virtual";
-                foreach (var prop in modelDescription.PropertyDescriptions)
-                {
-                    AddDocumentation(sb, prop.Documentation);
 
-                    sb.Append($"public {virtualValue} {prop.Type} {prop.Name} ");
-                    sb.AppendLine("{ get; set; }");
-                }
+            string virtualValue = modelDescription.IsValueType ? "" : "virtual";
+            foreach (var prop in modelDescription.PropertyDescriptions)
+            {
+                AddDocumentation(sb, prop.Documentation);
+
+                sb.Append($"public {virtualValue} {prop.Type} {prop.Name} ");
+                sb.AppendLine("{ get; set; }");
             }
+
             sb.AppendLine("}");
 
             return sb.ToString();
@@ -185,95 +172,90 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
             sb.AppendLine($"public {controllerDescription.Name}Client{_configuration.Ctor}");
             sb.AppendLine("{ }");
-            
-            if (controllerDescription.MethodDescription != null)
+
+            foreach (var methodDescription in controllerDescription.MethodDescriptions)
             {
-                foreach (var methodDescription in controllerDescription.MethodDescription)
+                if (IsInvalidType(methodDescription.ReturnType))
                 {
-                    if (IsInvalidType(methodDescription.ReturnType))
+                    sb.AppendLine($"// Unable to generate proxy method for {methodDescription.Name}. Please specify the return value by ResponseType attribute");
+                    continue;
+                }
+
+                var signature = GetProxyMethodSignature(methodDescription);
+                sb.Append("public ");
+                sb.AppendLine(signature);
+                sb.AppendLine("{");
+
+                var url = methodDescription.RelativePath;
+                if (methodDescription.RelativePath.Contains("?"))
+                {
+                    int index = methodDescription.RelativePath.IndexOf("?");
+                    url = methodDescription.RelativePath.Substring(0, index);
+                }
+                sb.AppendLine($"var url = \"{url}\";");
+
+
+                sb.AppendLine();
+                bool manyCustomParams = methodDescription.UrlParameterDescriptions.Count(IsCustomType) > 1;
+
+                foreach (var urlParam in methodDescription.UrlParameterDescriptions
+                    .Where(u => !string.IsNullOrEmpty(u.ProxySource)))
+                {
+                    sb.AppendLine($"var {urlParam.Name} = {urlParam.ProxySource};");
+                }
+
+                foreach (var urlParam in methodDescription.UrlParameterDescriptions)
+                {
+                    if (IsIEnumerable(urlParam.Type))
                     {
-                        sb.AppendLine($"// Unable to generate proxy method for {methodDescription.Name}. Please specify the return value by ResponseType attribute");
-                        continue;
+                        AppendIEnumerableParameter(urlParam, sb);
                     }
-
-                    var signature = GetProxyMethodSignature(methodDescription);
-                    sb.Append("public ");
-                    sb.AppendLine(signature);
-                    sb.AppendLine("{");
-
-                    var url = methodDescription.RelativePath;
-                    if (methodDescription.RelativePath.Contains("?"))
+                    else if (IsCustomType(urlParam))
                     {
-                        int index = methodDescription.RelativePath.IndexOf("?");
-                        url = methodDescription.RelativePath.Substring(0, index);
-                    }
-                    sb.AppendLine($"var url = \"{url}\";");
-                    
-
-                    if (methodDescription.UrlParameterDescriptions != null)
-                    {
-                        sb.AppendLine();
-                        bool manyCustomParams = methodDescription.UrlParameterDescriptions.Count(IsCustomType) > 1;
-
-                        foreach (var urlParam in methodDescription.UrlParameterDescriptions
-                            .Where(u => !string.IsNullOrEmpty(u.ProxySource)))
+                        if (_configuration.GenerateModel)
                         {
-                            sb.AppendLine($"var {urlParam.Name} = {urlParam.ProxySource};");
+                            AppendCustomParameter(urlParam, sb, manyCustomParams);
                         }
-
-                        foreach (var urlParam in methodDescription.UrlParameterDescriptions)
+                        else
                         {
-                            if (IsIEnumerable(urlParam.Type))
-                            {
-                                AppendIEnumerableParameter(urlParam, sb);
-                            }
-                            else if (IsCustomType(urlParam))
-                            {
-                                if (_configuration.GenerateModel)
-                                {
-                                    AppendCustomParameter(urlParam, sb, manyCustomParams);
-                                }
-                                else
-                                {
-                                    sb.AppendLine($"url = AppendParametersFromPropertiesOnRuntime(url, \"{urlParam.Name}\", {urlParam.Name}, {manyCustomParams.ToString().ToLower()});");
-                                }
-                            }
-                            else
-                            {
-                                string format = string.IsNullOrEmpty(urlParam.ProxyFormat)
-                                        ? ""
-                                        : ", \"" + urlParam.ProxyFormat + "\"";
-
-                                if (url.Contains("{" + urlParam.Name + "}"))
-                                {
-                                    sb.AppendLine("url = url.Replace(\"{" + urlParam.Name + "}\", ConvertToString(" + urlParam.Name + ") " + format + ");");
-                                }
-                                else
-                                {
-                                    sb.AppendLine($"url = AppendParameter(url, \"{urlParam.Name}\", {urlParam.Name}{format});");
-                                }
-                                
-                            }
-                            sb.AppendLine();
+                            sb.AppendLine($"url = AppendParametersFromPropertiesOnRuntime(url, \"{urlParam.Name}\", {urlParam.Name}, {manyCustomParams.ToString().ToLower()});");
                         }
-                    }
-
-                    string bodyParam = methodDescription.BodyParameterDescription != null ?
-                        ", " + methodDescription.BodyParameterDescription.Name :
-                        "";
-                    string httpMethod = methodDescription.HttpMethod.Substring(0, 1) +
-                                        methodDescription.HttpMethod.Substring(1).ToLower();
-                    if (methodDescription.ReturnType == null)
-                    {
-                        sb.AppendLine($"return {httpMethod}NoResultAsync(url{bodyParam});");
                     }
                     else
                     {
-                        sb.AppendLine($"return {httpMethod}Async<{methodDescription.ReturnType}>(url{bodyParam});");
-                    }
+                        string format = string.IsNullOrEmpty(urlParam.ProxyFormat)
+                                ? ""
+                                : ", \"" + urlParam.ProxyFormat + "\"";
 
-                    sb.AppendLine("}");
+                        if (url.Contains("{" + urlParam.Name + "}"))
+                        {
+                            sb.AppendLine("url = url.Replace(\"{" + urlParam.Name + "}\", ConvertToString(" + urlParam.Name + ") " + format + ");");
+                        }
+                        else
+                        {
+                            sb.AppendLine($"url = AppendParameter(url, \"{urlParam.Name}\", {urlParam.Name}{format});");
+                        }
+
+                    }
+                    sb.AppendLine();
                 }
+
+
+                string bodyParam = methodDescription.BodyParameterDescription != null ?
+                    ", " + methodDescription.BodyParameterDescription.Name :
+                    "";
+                string httpMethod = methodDescription.HttpMethod.Substring(0, 1) +
+                                    methodDescription.HttpMethod.Substring(1).ToLower();
+                if (methodDescription.ReturnType == null)
+                {
+                    sb.AppendLine($"return {httpMethod}NoResultAsync(url{bodyParam});");
+                }
+                else
+                {
+                    sb.AppendLine($"return {httpMethod}Async<{methodDescription.ReturnType}>(url{bodyParam});");
+                }
+
+                sb.AppendLine("}");
             }
 
             sb.AppendLine("}");
@@ -283,8 +265,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
         private bool IsCustomType(ParameterDescription parameterDescription)
         {
-            return _webApiDescription.ModelDescriptions != null &&
-                   _webApiDescription.ModelDescriptions.Any(m => m.Name == parameterDescription.Type);
+            return _webApiDescription.ModelDescriptions.Any(m => m.Name == parameterDescription.Type);
         }
 
         private void AppendCustomParameter(ParameterDescription urlParam, StringBuilder sb, bool includeParamName)
@@ -351,40 +332,36 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.Append($"{returnType} {methodDescription.Name}Async");
             sb.Append("(");
 
-            if (methodDescription.UrlParameterDescriptions != null)
+            var paramStrings = new List<string>();
+            foreach (var parameterDescription in methodDescription.UrlParameterDescriptions)
             {
-                var paramStrings = new List<string>();
-                foreach (var parameterDescription in methodDescription.UrlParameterDescriptions)
-                {
-                    if (!string.IsNullOrEmpty(parameterDescription.ProxySource)) continue;
+                if (!string.IsNullOrEmpty(parameterDescription.ProxySource)) continue;
 
-                    string paramString;
-                    if (parameterDescription.IsOptional)
+                string paramString;
+                if (parameterDescription.IsOptional)
+                {
+                    if (parameterDescription.Type == "string")
                     {
-                        if (parameterDescription.Type == "string")
-                        {
-                            paramString = $"{parameterDescription.Type} {parameterDescription.Name} = \"{parameterDescription.DefaultValue}\"";
-                        }
-                        else
-                        {
-                            paramString = $"{parameterDescription.Type} {parameterDescription.Name} = {parameterDescription.DefaultValue}";
-                        }
+                        paramString = $"{parameterDescription.Type} {parameterDescription.Name} = \"{parameterDescription.DefaultValue}\"";
                     }
                     else
                     {
-                        paramString = $"{parameterDescription.Type} {parameterDescription.Name}";
+                        paramString = $"{parameterDescription.Type} {parameterDescription.Name} = {parameterDescription.DefaultValue}";
                     }
-                    paramStrings.Add(paramString);
                 }
-                var parameters = string.Join(", ", paramStrings);
-                sb.Append(parameters);
+                else
+                {
+                    paramString = $"{parameterDescription.Type} {parameterDescription.Name}";
+                }
+                paramStrings.Add(paramString);
             }
+            var parameters = string.Join(", ", paramStrings);
+            sb.Append(parameters);
 
             if (methodDescription.BodyParameterDescription != null)
             {
                 string comma = "";
-                if (methodDescription.UrlParameterDescriptions != null &&
-                    methodDescription.UrlParameterDescriptions.Any(u => string.IsNullOrEmpty(u.ProxySource)))
+                if (methodDescription.UrlParameterDescriptions.Any(u => string.IsNullOrEmpty(u.ProxySource)))
                 {
                     comma = ", ";
                 }
@@ -408,21 +385,18 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine($"public interface I{controllerDescription.Name}Client");
             sb.AppendLine("{");
 
-            if (controllerDescription.MethodDescription != null)
+            foreach (var methodDescription in controllerDescription.MethodDescriptions)
             {
-                foreach (var methodDescription in controllerDescription.MethodDescription)
+                if (IsInvalidType(methodDescription.ReturnType))
                 {
-                    if (IsInvalidType(methodDescription.ReturnType))
-                    {
-                        sb.AppendLine($"// Unable to generate proxy method for {methodDescription.Name}. Please specify the return value by ResponseType attribute");
-                    }
-                    else
-                    {
-                        AddMethodDocumentation(sb, methodDescription);
-                        var signature = GetProxyMethodSignature(methodDescription);
-                        sb.Append(signature);
-                        sb.AppendLine(";");
-                    }
+                    sb.AppendLine($"// Unable to generate proxy method for {methodDescription.Name}. Please specify the return value by ResponseType attribute");
+                }
+                else
+                {
+                    AddMethodDocumentation(sb, methodDescription);
+                    var signature = GetProxyMethodSignature(methodDescription);
+                    sb.Append(signature);
+                    sb.AppendLine(";");
                 }
             }
 

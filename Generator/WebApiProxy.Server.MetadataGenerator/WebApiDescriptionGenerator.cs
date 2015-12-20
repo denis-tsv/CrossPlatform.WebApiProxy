@@ -70,7 +70,7 @@ namespace WebApiProxy.Server.MetadataGenerator
                 {
                     Name = apiGroup.Key.ControllerName,
                     Documentation = _documentationProvider.GetDocumentation(apiGroup.Key),
-                    MethodDescription = GetMethodDefinitions(apiGroup)
+                    MethodDescriptions = GetMethodDefinitions(apiGroup)
                 };
 
                 controllerDefinitions.Add(definition);

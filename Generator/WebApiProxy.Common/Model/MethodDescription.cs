@@ -8,8 +8,7 @@ namespace WebApiProxy.Common.Model
 
         public string RelativePath { get; set; }
 
-        //TODO Создавать в конструкторе, тогда на клиенте можно обойтись без истеричных проверок
-        public List<ParameterDescription> UrlParameterDescriptions { get; set; }
+        public List<ParameterDescription> UrlParameterDescriptions { get; set; } = new List<ParameterDescription>();
 
         public ParameterDescription BodyParameterDescription { get; set; }
 

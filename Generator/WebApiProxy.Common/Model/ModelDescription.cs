@@ -10,6 +10,6 @@ namespace WebApiProxy.Common.Model
 
         public string BaseModelName { get; set; }
 
-        public List<ModelPropertyDescription> PropertyDescriptions { get; set; }
+        public List<ModelPropertyDescription> PropertyDescriptions { get; set; } = new List<ModelPropertyDescription>();
     }
 }
