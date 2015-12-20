@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 
-namespace WebApiProxy.Server.MetadataGenerator
+namespace WebApiProxy.Server.MetadataGenerator.Documentation
 {
     public class AggregateXmlDocumentationProvider : IDocumentationProvider, IModelDocumentationProvider
     {

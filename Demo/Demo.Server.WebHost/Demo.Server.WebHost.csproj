@@ -132,6 +132,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpApiController.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
     <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
     <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
@@ -227,9 +228,9 @@
       <Project>{0bd38cfa-e428-457c-93db-cea7b84952f8}</Project>
       <Name>WebApiProxy.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Generator\WebApiProxy.Server.MetadataGenerator\WebApiProxy.Server.MetadataGenerator.csproj">
+    <ProjectReference Include="..\..\Generator\WebApiProxy.Server.DescriptionGenerator\WebApiProxy.Server.DescriptionGenerator.csproj">
       <Project>{681c3cfc-75c1-40b2-957e-28d5c7b784fa}</Project>
-      <Name>WebApiProxy.Server.MetadataGenerator</Name>
+      <Name>WebApiProxy.Server.DescriptionGenerator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Demo.Model\Demo.Model.csproj">
       <Project>{46f6154b-ef97-44da-a966-8d0528e51d66}</Project>

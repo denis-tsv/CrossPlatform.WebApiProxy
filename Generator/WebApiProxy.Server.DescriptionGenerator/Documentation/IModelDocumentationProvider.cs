@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace WebApiProxy.Server.MetadataGenerator
+namespace WebApiProxy.Server.MetadataGenerator.Documentation
 {
     public interface IModelDocumentationProvider
     {

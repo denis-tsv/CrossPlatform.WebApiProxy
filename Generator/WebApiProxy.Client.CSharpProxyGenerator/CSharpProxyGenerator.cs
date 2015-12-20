@@ -170,8 +170,11 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine($"public class {controllerDescription.Name}Client : BaseClient, I{controllerDescription.Name}Client");
             sb.AppendLine("{");
 
-            sb.AppendLine($"public {controllerDescription.Name}Client{_configuration.Ctor}");
-            sb.AppendLine("{ }");
+            if (!string.IsNullOrEmpty(_configuration.Ctor))
+            {
+                sb.AppendLine($"public {controllerDescription.Name}Client{_configuration.Ctor}");
+                sb.AppendLine("{ }");
+            }
 
             foreach (var methodDescription in controllerDescription.MethodDescriptions)
             {

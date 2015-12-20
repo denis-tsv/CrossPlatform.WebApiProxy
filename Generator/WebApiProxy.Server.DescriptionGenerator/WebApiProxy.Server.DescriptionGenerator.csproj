@@ -53,12 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AggregateXmlDocumentationProvider.cs" />
-    <Compile Include="IModelDocumentationProvider.cs" />
+    <Compile Include="Documentation\AggregateXmlDocumentationProvider.cs" />
+    <Compile Include="Documentation\IModelDocumentationProvider.cs" />
     <Compile Include="WebApiDescriptionGenerator.cs" />
     <Compile Include="WebApiDescriptionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlDocumentationProvider.cs" />
+    <Compile Include="Documentation\XmlDocumentationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

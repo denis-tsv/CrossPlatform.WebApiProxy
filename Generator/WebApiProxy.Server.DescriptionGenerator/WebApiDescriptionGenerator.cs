@@ -11,6 +11,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using WebApiProxy.Common.DataAnnotations;
 using WebApiProxy.Common.Model;
+using WebApiProxy.Server.MetadataGenerator.Documentation;
 
 namespace WebApiProxy.Server.MetadataGenerator
 {
