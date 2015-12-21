@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ProxyGeneratorConfiguration >
+  <DescriptionUrl>http://localhost:36761/api/meta</DescriptionUrl>
+  <AdditionalNamespaces>
+    <string>System.CodeDom.Compiler</string>
+    <string>Newtonsoft.Json</string>
+  </AdditionalNamespaces>
+  <GenerateModel>true</GenerateModel>
+  <Namespace>Demo.Client.WPF.WebApiProxy</Namespace>
+  <BaseProxyClass>Demo.Client.WPF.WebApiProxy.ControllerClient</BaseProxyClass>
+  <ProxyConstructor>(Uri baseUrl) : base(baseUrl)</ProxyConstructor>
+</ProxyGeneratorConfiguration>

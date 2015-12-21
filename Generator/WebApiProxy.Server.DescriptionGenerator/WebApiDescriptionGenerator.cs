@@ -307,7 +307,7 @@ namespace WebApiProxy.Server.MetadataGenerator
             {
                 var arg = type.GetGenericArguments().Single();
                 var argName = ParseTypeName(arg);
-                return argName + "?"; //TODO IsNullable
+                return argName + "?"; 
             }
 
             var typeNameBuilder = new StringBuilder();

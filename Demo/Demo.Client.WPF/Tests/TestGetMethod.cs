@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Proxy;
+using Demo.Client.WPF.WebApiProxy;
 using Xunit;
 
-namespace Demo.Client.WPF
+namespace Demo.Client.WPF.Tests
 {
     public class PropertiesComparer<T> : IEqualityComparer<T>
     {

@@ -6,17 +6,15 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Proxy
+namespace Demo.Client.WPF.WebApiProxy
 {
-    public abstract class BaseClient
+    public abstract class ControllerClient
     {
         private static readonly Dictionary<Type, PropertyInfo[]> PropertiesDictionary = new Dictionary<Type, PropertyInfo[]>();
-        private readonly Uri _baseUrl;
         protected HttpClient HttpClient;
 
-        protected BaseClient(Uri baseUrl)
+        protected ControllerClient(Uri baseUrl)
         {
-            _baseUrl = baseUrl;
             HttpClient = new HttpClient
             {
                 BaseAddress = baseUrl,
@@ -50,7 +48,6 @@ namespace Proxy
             foreach (var property in properties)
             {
                 var value = property.GetValue(paramValue);
-                //TODO выпихнуть атрибуты в оддельный пакет? Тогда можно будет использовать Ignore И Format в своих библиотеках
                 var propString = GetParamString($"{paramNameStr}{property.Name}", value, null);
                 propertyStrings.Add(propString);
             }
@@ -61,7 +58,7 @@ namespace Proxy
 
         private PropertyInfo[] GetPropertyInfos(Type type)
         {
-            //TODO threadsafe BDE или hardcore mvvm
+            
             if (PropertiesDictionary.ContainsKey(type))
             {
                 return PropertiesDictionary[type];

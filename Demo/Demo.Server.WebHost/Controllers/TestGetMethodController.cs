@@ -271,8 +271,6 @@ namespace Demo.Server.WebHost.Controllers
         }
         #endregion
 
-        //TODO Body param
-
     }
 
     public class PropertiesComparer<T> : IEqualityComparer<T>

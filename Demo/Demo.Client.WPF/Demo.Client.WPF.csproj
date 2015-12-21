@@ -83,24 +83,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="..\Demo.Model\AllDataTypesModel.Shared.cs">
-      <Link>AllDataTypesModel.Shared.cs</Link>
+      <Link>Model\AllDataTypesModel.Shared.cs</Link>
     </Compile>
-    <Compile Include="TestDeleteMethod.cs" />
-    <Compile Include="TestGetMethod.cs" />
-    <Compile Include="TestPostMethod.cs" />
-    <Compile Include="TestPutMethod.cs" />
+    <Compile Include="Tests\TestDeleteMethod.cs" />
+    <Compile Include="Tests\TestGetMethod.cs" />
+    <Compile Include="Tests\TestPostMethod.cs" />
+    <Compile Include="Tests\TestPutMethod.cs" />
+    <Compile Include="WebApiProxy\WebApiProxy.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="..\..\..\..\code.cs">
-      <Link>code.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="BaseClient.cs" />
+    <Compile Include="WebApiProxy\ControllerClient.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -137,6 +135,9 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WebApiProxy\ProxyGeneratorConfiguration.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -144,6 +145,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)packages\WebApiProxy\tools\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

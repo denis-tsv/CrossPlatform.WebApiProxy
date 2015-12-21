@@ -1,7 +1,7 @@
 ﻿using System;
 
 #if CLIENT
-namespace Proxy
+namespace Demo.Client.WPF.WebApiProxy
 #else
 namespace Demo.Model
 #endif

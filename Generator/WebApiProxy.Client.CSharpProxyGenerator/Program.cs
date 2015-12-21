@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net.Http;
+using System.Xml.Serialization;
 using WebApiProxy.Common.Model;
 
 namespace WebApiProxy.Client.CSharpProxyGenerator
@@ -8,24 +10,25 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
     {
         static void Main(string[] args)
         {
-            var asm = typeof (Configuration).Assembly;
+            if (args.Length != 2)
+                throw new Exception("Generator requires 2 arguments: path to config and path to source code");
 
-            var configuration = new Configuration
-            {
-                GenerateModel = true,
-                Namespace = "Proxy",
-                Ctor = "(Uri baseUrl) : base(baseUrl)"
-            };
+            var configurationPath = args[0];
+            var srcPath = args[1];
 
-            var metadata = LoadMetadata("http://localhost:36761/api/meta"); //demo
+            var xmlSerializer = new XmlSerializer(typeof (ProxyGeneratorConfiguration));
+            var stream = File.OpenRead(configurationPath);
+            var configuration = (ProxyGeneratorConfiguration)xmlSerializer.Deserialize(stream);
+            stream.Close();
+
+            var metadata = LoadMetadata(configuration.DescriptionUrl); 
             //var metadata = LoadMetadata("http://localhost:54186/api/meta"); //SCS
-
             //var metadata = LoadMetadata("http://localhost:2112/api/meta"); //prism
 
-            var codeGenerator = new CSharpProxyGenerator();
-            var code = codeGenerator.Generate(configuration, metadata);
+            var codeGenerator = new CSharpProxyGenerator(configuration, metadata);
+            var code = codeGenerator.Generate();
 
-            File.WriteAllText(@"d:\code.cs", code);
+            File.WriteAllText(srcPath, code);
         }
 
         private static WebApiDescription LoadMetadata(string apiMetadataUrl)
