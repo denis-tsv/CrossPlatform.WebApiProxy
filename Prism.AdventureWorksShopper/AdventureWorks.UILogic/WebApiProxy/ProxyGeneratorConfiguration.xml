@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ProxyGeneratorConfiguration >
+  <DescriptionUrl>http://localhost:2112/api/meta</DescriptionUrl>
+  <AdditionalNamespaces>
+    <string>AdventureWorks.UILogic.Models</string>
+    <string>System.Collections.ObjectModel</string>
+    <string>System.Net.Http</string>
+  </AdditionalNamespaces>
+  <GenerateModel>false</GenerateModel>
+  <Namespace>AdventureWorks.UILogic.WebApiProxy</Namespace>
+  <BaseProxyClass>AdventureWorks.UILogic.WebApiProxy.ControllerClient</BaseProxyClass>
+  <BaseProxyInterface>AdventureWorks.UILogic.WebApiProxy.IControllerClient</BaseProxyInterface>
+  <ProxyConstructor>(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)</ProxyConstructor>
+</ProxyGeneratorConfiguration>
