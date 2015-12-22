@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -48,8 +49,21 @@ namespace Demo.Client.WPF.WebApiProxy
             foreach (var property in properties)
             {
                 var value = property.GetValue(paramValue);
-                var propString = GetParamString($"{paramNameStr}{property.Name}", value, null);
-                propertyStrings.Add(propString);
+
+                if (value is IEnumerable && !(value is string))
+                {
+                    var values = (IEnumerable) value;
+                    foreach (var valueItem in values)
+                    {
+                        var propString = GetParamString($"{paramNameStr}{property.Name}", valueItem, null);
+                        propertyStrings.Add(propString);
+                    }
+                }
+                else
+                {
+                    var propString = GetParamString($"{paramNameStr}{property.Name}", value, null);
+                    propertyStrings.Add(propString);
+                }
             }
 
             var separator = currentUrl.Contains("?") ? "&" : "?";

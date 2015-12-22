@@ -82,9 +82,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\Demo.Model\AllDataTypesModel.Shared.cs">
-      <Link>Model\AllDataTypesModel.Shared.cs</Link>
-    </Compile>
     <Compile Include="Tests\TestDeleteMethod.cs" />
     <Compile Include="Tests\TestGetMethod.cs" />
     <Compile Include="Tests\TestPostMethod.cs" />
@@ -122,7 +119,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -137,6 +136,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="WebApiProxy\ProxyGeneratorConfiguration.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Demo.Model\Demo.Model.csproj">
+      <Project>{46f6154b-ef97-44da-a966-8d0528e51d66}</Project>
+      <Name>Demo.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

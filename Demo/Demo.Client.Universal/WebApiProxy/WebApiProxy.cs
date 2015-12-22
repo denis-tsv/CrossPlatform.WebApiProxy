@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 // additional namespaces
 using Demo.Model;
 
-namespace Demo.Client.WPF.WebApiProxy
+namespace Demo.Client.Universal.WebApiProxy
 {
 	public interface ITestPostMethodClient
 	{

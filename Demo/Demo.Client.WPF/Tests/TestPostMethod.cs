@@ -1,8 +1,19 @@
 ﻿using System;
-using Demo.Client.WPF.WebApiProxy;
 using Xunit;
 
+#if NETFX_CORE
+using Demo.Client.Universal.WebApiProxy;
+using Demo.Model;
+#else
+using Demo.Client.WPF.WebApiProxy;
+using Demo.Model;
+#endif
+
+#if NETFX_CORE
+namespace Demo.Client.Universal.Tests
+#else
 namespace Demo.Client.WPF.Tests
+#endif
 {
     public class TestPostMethod
     {

@@ -5,7 +5,7 @@
     <string>Demo.Model</string>
   </AdditionalNamespaces>
   <GenerateModel>false</GenerateModel>
-  <Namespace>Demo.Client.WPF.WebApiProxy</Namespace>
+  <Namespace>Demo.Client.Universal.WebApiProxy</Namespace>
   <BaseProxyClass>Demo.Client.WPF.WebApiProxy.ControllerClient</BaseProxyClass>
   <ProxyConstructor>(Uri baseUrl) : base(baseUrl)</ProxyConstructor>
 </ProxyGeneratorConfiguration>

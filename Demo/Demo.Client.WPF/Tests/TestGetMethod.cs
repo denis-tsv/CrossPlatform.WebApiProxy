@@ -2,10 +2,22 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Demo.Client.WPF.WebApiProxy;
 using Xunit;
 
+#if NETFX_CORE
+using Demo.Client.Universal.WebApiProxy;
+using Demo.Model;
+using System.Reflection;
+#else
+using Demo.Client.WPF.WebApiProxy;
+using Demo.Model;
+#endif
+
+#if NETFX_CORE
+namespace Demo.Client.Universal.Tests
+#else
 namespace Demo.Client.WPF.Tests
+#endif
 {
     public class PropertiesComparer<T> : IEqualityComparer<T>
     {
