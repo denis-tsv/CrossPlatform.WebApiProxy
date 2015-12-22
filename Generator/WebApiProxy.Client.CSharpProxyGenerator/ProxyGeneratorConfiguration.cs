@@ -7,6 +7,7 @@
         public bool GenerateModel { get; set; }
         public string Namespace { get; set; }
         public string BaseProxyClass { get; set; }
+        public string BaseProxyInterface { get; set; }
         public string ProxyConstructor { get; set; }
         
         //public string AdditionalAssemblies { get; set; }

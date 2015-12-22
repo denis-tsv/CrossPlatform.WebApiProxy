@@ -6,8 +6,9 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AdventureWorks.UILogic.Models;
 using System.Globalization;
+using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
-using Windows.Web.Http;
 
 namespace AdventureWorks.UILogic.Services
 {
@@ -38,7 +39,7 @@ namespace AdventureWorks.UILogic.Services
             {
                 var serializedAddress = JsonConvert.SerializeObject(address);
 
-                var response = await client.PostAsync(new Uri(_clientBaseUrl), new HttpStringContent(serializedAddress, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
+                var response = await client.PostAsync(new Uri(_clientBaseUrl), new StringContent(serializedAddress, Encoding.UTF8, "application/json"));
                 await response.EnsureSuccessWithValidationSupportAsync();
             }
         }

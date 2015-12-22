@@ -2,9 +2,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using AdventureWorks.WebServices.Repositories;
 
 namespace AdventureWorks.WebServices.Controllers
@@ -31,6 +33,7 @@ namespace AdventureWorks.WebServices.Controllers
 
         //
         // GET: /SearchSuggestion/
+        [ResponseType(typeof(ReadOnlyCollection<string>))]
         public IEnumerable<string> GetSearchSuggestions(string searchTerm)
         {
             var items = _searchSuggestionsRepository.GetAll()

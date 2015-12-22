@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using AdventureWorks.WebServices.Models;
 using AdventureWorks.WebServices.Repositories;
 using AdventureWorks.WebServices.Strings;
@@ -25,12 +26,14 @@ namespace AdventureWorks.WebServices.Controllers
 
         // GET /api/PaymentMethod
         [Authorize]
+        [ResponseType(typeof(ICollection<PaymentMethod>))]
         public IEnumerable<PaymentMethod> GetAll()
         {
             return _paymentMethodRepository.GetAll(this.User.Identity.Name);
         }
 
         // POST /api/PaymentMethod
+        [ResponseType(typeof(bool))]
         [Authorize]
         public HttpResponseMessage PostAddress(PaymentMethod paymentMethod)
         {
@@ -49,6 +52,7 @@ namespace AdventureWorks.WebServices.Controllers
         }
 
         // PUT /api/PaymentMethod?defaultPaymentMethodId=[defaultAddressId]
+        [ResponseType(typeof(bool))]
         [Authorize]
         public HttpResponseMessage Put(string defaultPaymentMethodId)
         {

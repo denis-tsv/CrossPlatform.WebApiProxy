@@ -6,9 +6,11 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApiProxy.Common.DataAnnotations;
 
 namespace AdventureWorks.WebServices.Controllers
 {
+    [ProxyIgnore]
     public class TileNotificationController : ApiController
     {
         private IProductRepository _productRepository;

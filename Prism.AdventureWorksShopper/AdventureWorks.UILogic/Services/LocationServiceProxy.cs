@@ -15,7 +15,7 @@ namespace AdventureWorks.UILogic.Services
     {
         private string _clientBaseUrl = string.Format(CultureInfo.InvariantCulture, "{0}/api/Location", Constants.ServerAddress);
 
-        public async Task<IReadOnlyCollection<string>> GetStatesAsync()
+        public async Task<ReadOnlyCollection<string>> GetStatesAsync()
         {
             using (var client = new HttpClient())
             {

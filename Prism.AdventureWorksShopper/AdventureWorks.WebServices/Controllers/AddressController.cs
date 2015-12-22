@@ -5,6 +5,7 @@ using AdventureWorks.WebServices.Repositories;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using AdventureWorks.WebServices.Models;
 using AdventureWorks.WebServices.Strings;
 
@@ -26,12 +27,14 @@ namespace AdventureWorks.WebServices.Controllers
 
         // GET /api/Address
         [Authorize]
+        [ResponseType(typeof(ICollection<Address>))]
         public IEnumerable<Address> GetAll()
         {
             return _addressRepository.GetAll(this.User.Identity.Name);
         }
         
         // POST /api/Address
+        [ResponseType(typeof(bool))]
         [Authorize]
         public HttpResponseMessage PostAddress(Address address)
         {
@@ -50,6 +53,7 @@ namespace AdventureWorks.WebServices.Controllers
         }
 
         // PUT /api/Address?defaultAddressId=[defaultAddressId]&addressType=[addressType]
+        [ResponseType(typeof(bool))]
         [Authorize]
         public HttpResponseMessage Put(string defaultAddressId, AddressType addressType)
         {

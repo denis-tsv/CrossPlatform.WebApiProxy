@@ -6,7 +6,8 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AdventureWorks.UILogic.Models;
 using System.Globalization;
-using Windows.Web.Http;
+using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace AdventureWorks.UILogic.Services
@@ -36,7 +37,7 @@ namespace AdventureWorks.UILogic.Services
         {
             using (var client = new HttpClient())
             {
-                var response = await client.PostAsync(new Uri(_clientBaseUrl), new HttpStringContent(JsonConvert.SerializeObject(paymentMethod), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json"));
+                var response = await client.PostAsync(new Uri(_clientBaseUrl), new StringContent(JsonConvert.SerializeObject(paymentMethod), Encoding.UTF8, "application/json"));
                 await response.EnsureSuccessWithValidationSupportAsync();
             }
         }

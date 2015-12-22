@@ -6,6 +6,7 @@ using System.Security;
 using Microsoft.Practices.Prism.Mvvm.Interfaces;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using AdventureWorks.UILogic.Models;
+using AdventureWorks.UILogic.WebApiProxy;
 
 namespace AdventureWorks.UILogic.Services
 {
@@ -20,15 +21,18 @@ namespace AdventureWorks.UILogic.Services
         private readonly IIdentityService _identityService;
         private readonly ISessionStateService _sessionStateService;
         private readonly ICredentialStore _credentialStore;
+        private readonly IWebApiProxyFactory _webApiProxyFactory;
         private UserInfo _signedInUser;
         private string _userName;
         private string _password;
 
-        public AccountService(IIdentityService identityService, ISessionStateService sessionStateService, ICredentialStore credentialStore)
+        public AccountService(IIdentityService identityService, ISessionStateService sessionStateService, ICredentialStore credentialStore, IWebApiProxyFactory webApiProxyFactory)
         {
             _identityService = identityService;
             _sessionStateService = sessionStateService;
             _credentialStore = credentialStore;
+            _webApiProxyFactory = webApiProxyFactory;
+
             if (_sessionStateService != null)
             {
                 if (_sessionStateService.SessionState.ContainsKey(SignedInUserKey))
@@ -161,6 +165,7 @@ namespace AdventureWorks.UILogic.Services
 
             // remove user from the CredentialStore, if any
             _credentialStore.RemoveSavedCredentials(PasswordVaultResourceName);
+            _webApiProxyFactory.ClearCookies();
 
             RaiseUserChanged(_signedInUser, previousUser);
         }

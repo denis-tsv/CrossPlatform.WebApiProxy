@@ -4,7 +4,8 @@ using System;
 using System.Threading.Tasks;
 using AdventureWorks.UILogic.Models;
 using System.Globalization;
-using Windows.Web.Http;
+using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace AdventureWorks.UILogic.Services
@@ -46,7 +47,7 @@ namespace AdventureWorks.UILogic.Services
                         };
 
                     string requestUrl = _clientBaseUrl;
-                    var stringContent = new HttpStringContent(JsonConvert.SerializeObject(orderToSend), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
+                    var stringContent = new StringContent(JsonConvert.SerializeObject(orderToSend), Encoding.UTF8, "application/json");
                     var response = await orderClient.PostAsync(new Uri(requestUrl), stringContent);
                     await response.EnsureSuccessWithValidationSupportAsync();
 
@@ -89,7 +90,7 @@ namespace AdventureWorks.UILogic.Services
                     };
 
                     string requestUrl = _clientBaseUrl + orderToSend.Id;
-                    var stringContent = new HttpStringContent(JsonConvert.SerializeObject(orderToSend), Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json");
+                    var stringContent = new StringContent(JsonConvert.SerializeObject(orderToSend), Encoding.UTF8, "application/json");
                     var response = await orderClient.PutAsync(new Uri(requestUrl), stringContent);
                     await response.EnsureSuccessWithValidationSupportAsync();
                 }

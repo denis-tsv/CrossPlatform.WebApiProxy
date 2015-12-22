@@ -6,9 +6,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using AdventureWorks.UILogic.Services;
 
-
-namespace Demo.Client.WPF.WebApiProxy
+namespace AdventureWorks.UILogic.WebApiProxy
 {
     public interface IControllerClient : IDisposable
     {
@@ -18,11 +18,11 @@ namespace Demo.Client.WPF.WebApiProxy
     public abstract class ControllerClient : IControllerClient
     {
         private static readonly Dictionary<Type, PropertyInfo[]> PropertiesDictionary = new Dictionary<Type, PropertyInfo[]>();
-        public HttpClient HttpClient { get; protected set; }
+        public HttpClient HttpClient { get; set; }
 
-        protected ControllerClient(Uri baseUri)
+        protected ControllerClient(HttpClientHandler handler, Uri baseUri)
         {
-            HttpClient = new HttpClient
+            HttpClient = new HttpClient(handler)
             {
                 BaseAddress = baseUri,
             };
@@ -138,14 +138,16 @@ namespace Demo.Client.WPF.WebApiProxy
         {
             var response = await HttpClient.PostAsJsonAsync(relativeUri, value).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            await response.EnsureSuccessWithValidationSupportAsync();
         }
 
         protected async Task<T> PostAsync<T>(string relativeUri, object value = null)
         {
             var response = await HttpClient.PostAsJsonAsync(relativeUri, value).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            await response.EnsureSuccessWithValidationSupportAsync();
 
             var result = await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
             return result;
@@ -155,15 +157,17 @@ namespace Demo.Client.WPF.WebApiProxy
         {
             var response = await HttpClient.PutAsJsonAsync(relativeUri, value).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
+            await response.EnsureSuccessWithValidationSupportAsync();
         }
 
         protected async Task<T> PutAsync<T>(string relativeUri, object value = null)
         {
             var response = await HttpClient.PutAsJsonAsync(relativeUri, value).ConfigureAwait(false);
 
-            response.EnsureSuccessStatusCode();
-            
+            //response.EnsureSuccessStatusCode();
+            await response.EnsureSuccessWithValidationSupportAsync();
+
             var result = await response.Content.ReadAsAsync<T>().ConfigureAwait(false);
             return result;
         }

@@ -5,9 +5,11 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using AdventureWorks.WebServices.Models;
 using AdventureWorks.WebServices.Repositories;
 using AdventureWorks.WebServices.Strings;
+using WebApiProxy.Common.DataAnnotations;
 
 namespace AdventureWorks.WebServices.Controllers
 {
@@ -40,6 +42,7 @@ namespace AdventureWorks.WebServices.Controllers
         }
 
         // POST /api/order/create
+        [ResponseType(typeof(int))]
         [HttpPost]
         public HttpResponseMessage CreateOrder(Order order)
         {
@@ -62,8 +65,9 @@ namespace AdventureWorks.WebServices.Controllers
         }
 
         // PUT /api/order/process 
+        [ResponseType(typeof(void))]
         [HttpPut]
-        public HttpResponseMessage ProcessOrder(int id, Order order)
+        public HttpResponseMessage ProcessOrder([ProxySource("order.Id")]int id, Order order)
         {
             if (order == null || id != order.Id)
             {

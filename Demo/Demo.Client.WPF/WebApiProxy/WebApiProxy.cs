@@ -7,7 +7,7 @@ using Demo.Model;
 
 namespace Demo.Client.WPF.WebApiProxy
 {
-	public interface ITestPostMethodClient
+	public interface ITestPostMethodClient : Demo.Client.WPF.WebApiProxy.IControllerClient
 	{
 		Task PostXAsync(int x);
 		Task<int> PostIdAsync(int id, string str);
@@ -31,7 +31,7 @@ namespace Demo.Client.WPF.WebApiProxy
 			return PostAsync<int>(url, str);
 		}
 	}
-	public interface ITestPutMethodClient
+	public interface ITestPutMethodClient : Demo.Client.WPF.WebApiProxy.IControllerClient
 	{
 		Task<User> PutProxyParameterSourceAsync(User user);
 		Task PutVoidAsync(User user);
@@ -82,7 +82,7 @@ namespace Demo.Client.WPF.WebApiProxy
 	/// Controller documentation
 	/// multiline
 	/// </summary>
-	public interface ITestDocumentationClient
+	public interface ITestDocumentationClient : Demo.Client.WPF.WebApiProxy.IControllerClient
 	{
 		/// <summary>
 		/// Method documentation
@@ -113,7 +113,7 @@ namespace Demo.Client.WPF.WebApiProxy
 			return PostAsync<string>(url, doc);
 		}
 	}
-	public interface ITestDeleteMethodClient
+	public interface ITestDeleteMethodClient : Demo.Client.WPF.WebApiProxy.IControllerClient
 	{
 		Task DeleteAsync(int id);
 		Task<int> DeleteArrayAsync(string[] codes);
@@ -169,7 +169,7 @@ namespace Demo.Client.WPF.WebApiProxy
 			return DeleteAsync<DataAnnotationsModel>(url);
 		}
 	}
-	public interface ITestGetMethodClient
+	public interface ITestGetMethodClient : Demo.Client.WPF.WebApiProxy.IControllerClient
 	{
 		Task<int> GetSimpleAsync();
 		Task<AllDataTypesModel> GetClassAsync();

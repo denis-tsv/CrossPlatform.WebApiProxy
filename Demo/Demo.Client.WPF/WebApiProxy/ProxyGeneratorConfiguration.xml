@@ -7,5 +7,6 @@
   <GenerateModel>false</GenerateModel>
   <Namespace>Demo.Client.WPF.WebApiProxy</Namespace>
   <BaseProxyClass>Demo.Client.WPF.WebApiProxy.ControllerClient</BaseProxyClass>
+  <BaseProxyInterface>Demo.Client.WPF.WebApiProxy.IControllerClient</BaseProxyInterface>
   <ProxyConstructor>(Uri baseUrl) : base(baseUrl)</ProxyConstructor>
 </ProxyGeneratorConfiguration>

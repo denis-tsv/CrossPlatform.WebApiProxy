@@ -3,9 +3,10 @@
 using AdventureWorks.UILogic.Models;
 using Newtonsoft.Json;
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Security;
 using System.Threading.Tasks;
-using Windows.Web.Http;
 
 namespace AdventureWorks.UILogic.Services
 {

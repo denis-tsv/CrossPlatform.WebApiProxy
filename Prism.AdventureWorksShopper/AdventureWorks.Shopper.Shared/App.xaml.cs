@@ -26,6 +26,8 @@ using AdventureWorks.UILogic.Models;
 using AdventureWorks.UILogic.Repositories;
 using AdventureWorks.UILogic.Services;
 using AdventureWorks.UILogic.ViewModels;
+using AdventureWorks.UILogic.WebApiProxy;
+using AdventureWorks.UILogic.WebApiProxyServices;
 
 namespace AdventureWorks.Shopper
 {
@@ -91,11 +93,11 @@ namespace AdventureWorks.Shopper
             _container.RegisterInstance<IResourceLoader>(new Microsoft.Practices.Prism.StoreApps.ResourceLoaderAdapter(new ResourceLoader()));
             _container.RegisterType<IAccountService, AccountService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICredentialStore, RoamingCredentialStore>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ISecondaryTileService, SecondaryTileService>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());
             //TODO Cache service not works so i disabled it
             //_container.RegisterType<ICacheService, TemporaryFolderCacheService>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICacheService, EmptyCacheService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ISecondaryTileService, SecondaryTileService>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());
 
             // Register repositories
             _container.RegisterType<IProductCatalogRepository, ProductCatalogRepository>(new ContainerControlledLifetimeManager());
@@ -104,14 +106,27 @@ namespace AdventureWorks.Shopper
             _container.RegisterType<IOrderRepository, OrderRepository>(new ContainerControlledLifetimeManager());
 
             // Register web service proxies
-            _container.RegisterType<IProductCatalogService, ProductCatalogServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IOrderService, OrderServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShoppingCartService, ShoppingCartServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IShippingMethodService, ShippingMethodServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IIdentityService, IdentityServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<ILocationService, LocationServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IAddressService, AddressServiceProxy>(new ContainerControlledLifetimeManager());
-            _container.RegisterType<IPaymentMethodService, PaymentMethodServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IProductCatalogService, ProductCatalogServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IOrderService, OrderServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IShoppingCartService, ShoppingCartServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IShippingMethodService, ShippingMethodServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IIdentityService, IdentityServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<ILocationService, LocationServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IAddressService, AddressServiceProxy>(new ContainerControlledLifetimeManager());
+            //_container.RegisterType<IPaymentMethodService, PaymentMethodServiceProxy>(new ContainerControlledLifetimeManager());
+
+            // Register web service generated proxies
+            _container.RegisterType<IProductCatalogService, ProductCatalogServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IOrderService, OrderServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IShoppingCartService, ShoppingCartServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IShippingMethodService, ShippingMethodServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IIdentityService, IdentityServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<ILocationService, LocationServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IAddressService, AddressServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+            _container.RegisterType<IPaymentMethodService, PaymentMethodServiceGeneratedProxy>(new ContainerControlledLifetimeManager());
+
+            _container.RegisterType<IWebApiProxyFactory, WebApiProxyFactory>(new ContainerControlledLifetimeManager());
+            
 
             // Register child view models
             _container.RegisterType<IShippingAddressUserControlViewModel, ShippingAddressUserControlViewModel>();

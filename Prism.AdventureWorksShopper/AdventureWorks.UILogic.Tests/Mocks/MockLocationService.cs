@@ -8,10 +8,10 @@ namespace AdventureWorks.UILogic.Tests.Mocks
 {
     public class MockLocationService : ILocationService
     {
-        public Task<IReadOnlyCollection<string>> GetStatesAsync()
+        public Task<ReadOnlyCollection<string>> GetStatesAsync()
         {
             var states = new List<string> {"State1", "State2"};
-            IReadOnlyCollection<string> stateCollection = new ReadOnlyCollection<string>(states);
+            ReadOnlyCollection<string> stateCollection = new ReadOnlyCollection<string>(states);
             return Task.FromResult(stateCollection);
         }
     }

@@ -25,7 +25,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                     return Task.FromResult(new LogOnResult { UserInfo = new UserInfo{UserName = userId} });
                 };
 
-            var target = new AccountService(identityService, sessionStateService, null);
+            var target = new AccountService(identityService, sessionStateService, null, null);
             target.UserChanged += (sender, userInfo) => { userChangedFired = true; }; 
 
             var retVal = await target.SignInUserAsync("TestUserName", "TestPassword", false);
@@ -48,7 +48,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                         }
                 };
 
-            var target = new AccountService(identityService, sessionStateService, null);
+            var target = new AccountService(identityService, sessionStateService, null, null);
             await target.SignInUserAsync("TestUserName", "TestPassword", false);
             var user = await target.VerifyUserAuthenticationAsync();
 
@@ -72,7 +72,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                     SaveCredentialsDelegate = (a, b, c) => Task.Delay(0)
                 };
 
-            var target = new AccountService(identityService, sessionStateService, credentialStore);
+            var target = new AccountService(identityService, sessionStateService, credentialStore, null);
             await target.SignInUserAsync("TestUserName", "TestPassword", true);
 
             var user = await target.VerifyUserAuthenticationAsync();
@@ -93,7 +93,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                 throw new Exception();
             };
 
-            var target = new AccountService(identityService, sessionStateService, null);
+            var target = new AccountService(identityService, sessionStateService, null, null);
             target.UserChanged += (sender, userInfo) => { userChangedFired = true; };
 
             var retVal = await target.SignInUserAsync("TestUserName", "TestPassword", false);
@@ -115,7 +115,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                         });
                 };
 
-            var target = new AccountService(identityService, sessionStateService, null);
+            var target = new AccountService(identityService, sessionStateService, null, null);
             bool userSignedIn = await target.SignInUserAsync("TestUsername", "password", false);
 
             Assert.IsTrue(userSignedIn);
@@ -133,7 +133,7 @@ namespace AdventureWorks.UILogic.Tests.Services
             var credentialStore = new MockCredentialStore();
             credentialStore.GetSavedCredentialsDelegate = s => null;
             var sessionStateService = new MockSessionStateService();
-            var target = new AccountService(identityService, sessionStateService, credentialStore);
+            var target = new AccountService(identityService, sessionStateService, credentialStore, null);
 
             var userInfo = await target.VerifyUserAuthenticationAsync(); 
             
@@ -158,7 +158,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                     };
             var credentialStore = new MockCredentialStore();
             credentialStore.GetSavedCredentialsDelegate = s => new PasswordCredential(AccountService.PasswordVaultResourceName, "TestUserName", "TestPassword");
-            var target = new AccountService(identityService, sessionStateService, credentialStore);
+            var target = new AccountService(identityService, sessionStateService, credentialStore, null);
 
             var userInfo = await target.VerifyUserAuthenticationAsync();
 
@@ -181,7 +181,7 @@ namespace AdventureWorks.UILogic.Tests.Services
                 };
             var credentialStore = new MockCredentialStore();
             credentialStore.GetSavedCredentialsDelegate = s => new PasswordCredential(AccountService.PasswordVaultResourceName, "TestUserName", "TestPassword");
-            var target = new AccountService(identityService, sessionStateService, credentialStore);
+            var target = new AccountService(identityService, sessionStateService, credentialStore, null);
 
             var userInfo = await target.VerifyUserAuthenticationAsync();
 
@@ -198,8 +198,8 @@ namespace AdventureWorks.UILogic.Tests.Services
                     GetSavedCredentialsDelegate = s => null,
                     RemoveSavedCredentialsDelegate = s => Task.Delay(0)
                 };
-
-            var target = new AccountService(null, sessionStateService, credentialStore);
+            var proxyFactory = new MockWebApiProxyFactory();
+            var target = new AccountService(null, sessionStateService, credentialStore, proxyFactory);
             target.UserChanged += (sender, args) =>
                 {
                     userChangedRaised = true;

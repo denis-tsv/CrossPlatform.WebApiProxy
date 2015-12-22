@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
     <TargetFrameworkProfile>Profile32</TargetFrameworkProfile>
@@ -195,8 +195,20 @@
     <Compile Include="ViewModels\ShoppingCartItemViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartPageViewModel.cs" />
     <Compile Include="ViewModels\SignInFlyoutViewModel.cs" />
+    <Compile Include="WebApiProxyServices\AddressServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\IdentityServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\LocationServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\OrderServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\PaymentMethodServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\ProductCatalogServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\ShippingMethodServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxyServices\ShoppingCartServiceGeneratedProxy.cs" />
+    <Compile Include="WebApiProxy\ControllerClient.cs" />
+    <Compile Include="WebApiProxy\WebApiProxy.cs" />
+    <Compile Include="WebApiProxy\WebApiProxyFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
@@ -213,14 +225,29 @@
     <Reference Include="Microsoft.Practices.Prism.StoreApps">
       <HintPath>..\..\packages\Prism.StoreApps.2.0.0\lib\portable-windows8+wpa81\Microsoft.Practices.Prism.StoreApps.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.5.0.6\lib\netcore45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.4\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.22\lib\portable-net45+win8+wpa81\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\portable-wp8+netcore45+net45+wp81+wpa81\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.2.22\lib\portable-net45+win8+wpa81\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <TargetPlatform Include="Windows, Version=8.1" />
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="WebApiProxy\ProxyGeneratorConfiguration.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
@@ -233,6 +260,14 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)packages\WebApiProxy\tools\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

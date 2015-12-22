@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
+using System.Web.Http.Description;
 using AdventureWorks.WebServices.Models;
 using AdventureWorks.WebServices.Repositories;
 
@@ -26,6 +27,7 @@ namespace AdventureWorks.WebServices.Controllers
         }
 
         // GET /api/Category?parentId={parentId}&maxAmmountOfProducts={maxAmountOfProducts}
+        [ResponseType(typeof(ICollection<Category>))]
         public IEnumerable<Category> GetCategories(int parentId, int maxAmountOfProducts)
         {
             var categories = _categoryRepository.GetAll().Where(c => c.ParentId == parentId);

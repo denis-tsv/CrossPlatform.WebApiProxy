@@ -54,7 +54,8 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
         private void AddUsings(StringBuilder sb)
         {
             sb.AppendLine("using System;");
-            sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("using System.Collections.Generic;"); 
+            sb.AppendLine("using System.Collections.ObjectModel;");
             sb.AppendLine("using System.Threading.Tasks;");
             sb.AppendLine();
 
@@ -376,7 +377,10 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
         {
             AddDocumentation(sb, controllerDescription.Documentation, tabs);
 
-            sb.AppendLine(tabs, $"public interface I{controllerDescription.Name}Client");
+            var baseInterface = !string.IsNullOrEmpty(_proxyGeneratorConfiguration.BaseProxyInterface)
+                ? " : " + _proxyGeneratorConfiguration.BaseProxyInterface
+                : string.Empty;
+            sb.AppendLine(tabs, $"public interface I{controllerDescription.Name}Client{baseInterface}");
             sb.AppendLine(tabs, "{");
 
             foreach (var methodDescription in controllerDescription.MethodDescriptions)
