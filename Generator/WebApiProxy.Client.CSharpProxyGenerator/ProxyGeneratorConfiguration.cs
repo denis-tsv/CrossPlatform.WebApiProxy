@@ -9,8 +9,7 @@
         public string BaseProxyClass { get; set; }
         public string BaseProxyInterface { get; set; }
         public string ProxyConstructor { get; set; }
-        
-        //public string AdditionalAssemblies { get; set; }
+        public string Suffix { get; set; }
 
     }
 }

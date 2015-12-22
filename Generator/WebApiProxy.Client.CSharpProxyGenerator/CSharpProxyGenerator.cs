@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using WebApiProxy.Common.Model;
@@ -166,7 +167,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
         private void AddProxyImplementation(StringBuilder sb, ControllerDescription controllerDescription, int tabs)
         {
-            sb.AppendLine(tabs, $"public class {controllerDescription.Name}Client : {_proxyGeneratorConfiguration.BaseProxyClass}, I{controllerDescription.Name}Client");
+            sb.AppendLine(tabs, $"public class {controllerDescription.Name}{_proxyGeneratorConfiguration.Suffix} : {_proxyGeneratorConfiguration.BaseProxyClass}, I{controllerDescription.Name}{_proxyGeneratorConfiguration.Suffix}");
             sb.AppendLine(tabs, "{");
 
             tabs ++;
@@ -380,7 +381,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             var baseInterface = !string.IsNullOrEmpty(_proxyGeneratorConfiguration.BaseProxyInterface)
                 ? " : " + _proxyGeneratorConfiguration.BaseProxyInterface
                 : string.Empty;
-            sb.AppendLine(tabs, $"public interface I{controllerDescription.Name}Client{baseInterface}");
+            sb.AppendLine(tabs, $"public interface I{controllerDescription.Name}{_proxyGeneratorConfiguration.Suffix}{baseInterface}");
             sb.AppendLine(tabs, "{");
 
             foreach (var methodDescription in controllerDescription.MethodDescriptions)

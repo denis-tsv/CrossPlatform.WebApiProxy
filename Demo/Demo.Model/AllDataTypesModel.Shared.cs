@@ -1,7 +1,7 @@
 ﻿using System;
 
-#if CLIENT
-namespace Demo.Client.WPF.WebApiProxy
+#if GENERATE_MODEL
+namespace Demo.Client.GenerateModel.WebApiProxy
 #else
 namespace Demo.Model
 #endif

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using AdventureWorks.UILogic.Models;
-using AdventureWorks.UILogic.Services;
 
 namespace AdventureWorks.UILogic.WebApiProxy
 {

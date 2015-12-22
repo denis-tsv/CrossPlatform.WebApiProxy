@@ -1,19 +1,14 @@
 ﻿using System;
 using Xunit;
 
-#if NETFX_CORE
-using Demo.Client.Universal.WebApiProxy;
-using Demo.Model;
+#if GENERATE_MODEL
+using Demo.Client.GenerateModel.WebApiProxy;
 #else
-using Demo.Client.WPF.WebApiProxy;
+using Demo.Client.UseSharedModel.WebApiProxy;
 using Demo.Model;
 #endif
 
-#if NETFX_CORE
-namespace Demo.Client.Universal.Tests
-#else
-namespace Demo.Client.WPF.Tests
-#endif
+namespace Demo.Client.Tests
 {
     public class TestPutMethod
     {

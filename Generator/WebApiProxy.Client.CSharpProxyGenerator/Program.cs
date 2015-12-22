@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Xml.Serialization;
@@ -22,9 +23,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             stream.Close();
 
             var metadata = LoadMetadata(configuration.DescriptionUrl); 
-            //var metadata = LoadMetadata("http://localhost:54186/api/meta"); //SCS
-            //var metadata = LoadMetadata("http://localhost:2112/api/meta"); //prism
-
+            
             var codeGenerator = new CSharpProxyGenerator(configuration, metadata);
             var code = codeGenerator.Generate();
 

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ProxyGeneratorConfiguration >
+  <DescriptionUrl>http://localhost:36761/api/meta</DescriptionUrl>
+  <AdditionalNamespaces>
+  </AdditionalNamespaces>
+  <GenerateModel>true</GenerateModel>
+  <Suffix>Client</Suffix>
+  <Namespace>Demo.Client.GenerateModel.WebApiProxy</Namespace>
+  <BaseProxyClass>Demo.Client.GenerateModel.WebApiProxy.ControllerClient</BaseProxyClass>
+  <BaseProxyInterface>Demo.Client.GenerateModel.WebApiProxy.IControllerClient</BaseProxyInterface>
+  <ProxyConstructor>(Uri baseUrl) : base(baseUrl)</ProxyConstructor>
+</ProxyGeneratorConfiguration>

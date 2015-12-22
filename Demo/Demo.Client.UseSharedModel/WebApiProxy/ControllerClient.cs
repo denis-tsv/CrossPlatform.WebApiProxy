@@ -7,8 +7,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
-
-namespace Demo.Client.WPF.WebApiProxy
+namespace Demo.Client.UseSharedModel.WebApiProxy
 {
     public interface IControllerClient : IDisposable
     {
@@ -119,8 +118,6 @@ namespace Demo.Client.WPF.WebApiProxy
         #endregion
 
         #region Http Methods
-
-        //TODO GetBinaryAsync
 
         protected async Task<T> GetAsync<T>(string relativeUri)
         {

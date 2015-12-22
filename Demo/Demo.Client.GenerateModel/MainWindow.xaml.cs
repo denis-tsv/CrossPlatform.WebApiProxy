@@ -1,7 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 
-namespace Demo.Client.WPF
+namespace Demo.Client.GenerateModel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

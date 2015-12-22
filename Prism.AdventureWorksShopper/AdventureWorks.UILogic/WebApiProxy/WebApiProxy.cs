@@ -1,20 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 // additional namespaces
 using AdventureWorks.UILogic.Models;
-using System.Collections.ObjectModel;
 using System.Net.Http;
 
 namespace AdventureWorks.UILogic.WebApiProxy
 {
-	public interface IShippingMethodClient : IControllerClient
+	public interface IShippingMethodClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<IEnumerable<ShippingMethod>> defaultActionAsync();
 		Task<ShippingMethod> basicAsync();
 	}
-	public class ShippingMethodClient : ControllerClient, IShippingMethodClient
+	public class ShippingMethodClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IShippingMethodClient
 	{
 		public ShippingMethodClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -31,11 +31,11 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<ShippingMethod>(url);
 		}
 	}
-	public interface ILocationClient : IControllerClient
+	public interface ILocationClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<ReadOnlyCollection<string>> GetStatesAsync();
 	}
-	public class LocationClient : ControllerClient, ILocationClient
+	public class LocationClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, ILocationClient
 	{
 		public LocationClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -46,13 +46,13 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<ReadOnlyCollection<string>>(url);
 		}
 	}
-	public interface IIdentityClient : IControllerClient
+	public interface IIdentityClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<string> GetPasswordChallengeAsync(string requestId);
 		Task<UserInfo> GetIsValidAsync(string id, string requestId, string passwordHash);
 		Task<bool> GetIsValidSessionAsync();
 	}
-	public class IdentityClient : ControllerClient, IIdentityClient
+	public class IdentityClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IIdentityClient
 	{
 		public IdentityClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -83,12 +83,12 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<bool>(url);
 		}
 	}
-	public interface ICategoryClient : IControllerClient
+	public interface ICategoryClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<ICollection<Category>> GetCategoriesAsync(int parentId, int maxAmountOfProducts);
 		Task<Category> GetCategoryAsync(int id);
 	}
-	public class CategoryClient : ControllerClient, ICategoryClient
+	public class CategoryClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, ICategoryClient
 	{
 		public CategoryClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -111,7 +111,7 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<Category>(url);
 		}
 	}
-	public interface IShoppingCartClient : IControllerClient
+	public interface IShoppingCartClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<ShoppingCart> GetAsync(string id);
 		Task AddProductToShoppingCartAsync(string id, string productIdToIncrement);
@@ -121,7 +121,7 @@ namespace AdventureWorks.UILogic.WebApiProxy
 		Task<bool> MergeShoppingCartsAsync(string id, string anonymousShoppingCartId);
 		Task ResetAsync(bool resetData);
 	}
-	public class ShoppingCartClient : ControllerClient, IShoppingCartClient
+	public class ShoppingCartClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IShoppingCartClient
 	{
 		public ShoppingCartClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -190,14 +190,14 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return PostNoResultAsync(url);
 		}
 	}
-	public interface IOrderClient : IControllerClient
+	public interface IOrderClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<Order> GetOrderAsync(int id);
 		Task<int> CreateOrderAsync(Order order);
 		Task ProcessOrderAsync(Order order);
 		Task ResetAsync(bool resetData);
 	}
-	public class OrderClient : ControllerClient, IOrderClient
+	public class OrderClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IOrderClient
 	{
 		public OrderClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -233,13 +233,13 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return PostNoResultAsync(url);
 		}
 	}
-	public interface IAddressClient : IControllerClient
+	public interface IAddressClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<ICollection<Address>> GetAllAsync();
 		Task<bool> PostAddressAsync(Address address);
 		Task<bool> PutAsync(string defaultAddressId, AddressType addressType);
 	}
-	public class AddressClient : ControllerClient, IAddressClient
+	public class AddressClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IAddressClient
 	{
 		public AddressClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -266,14 +266,14 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return PutAsync<bool>(url);
 		}
 	}
-	public interface IProductClient : IControllerClient
+	public interface IProductClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<IEnumerable<Product>> GetProductsAsync();
 		Task<ICollection<Product>> GetProductsAsync(int categoryId);
 		Task<Product> GetProductAsync(string id);
 		Task<SearchResult> GetSearchResultsAsync(string queryString, int maxResults);
 	}
-	public class ProductClient : ControllerClient, IProductClient
+	public class ProductClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IProductClient
 	{
 		public ProductClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -310,12 +310,12 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<SearchResult>(url);
 		}
 	}
-	public interface ISearchSuggestionClient : IControllerClient
+	public interface ISearchSuggestionClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<IEnumerable<string>> GetSearchSuggestionsAsync();
 		Task<ReadOnlyCollection<string>> GetSearchSuggestionsAsync(string searchTerm);
 	}
-	public class SearchSuggestionClient : ControllerClient, ISearchSuggestionClient
+	public class SearchSuggestionClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, ISearchSuggestionClient
 	{
 		public SearchSuggestionClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }
@@ -334,13 +334,13 @@ namespace AdventureWorks.UILogic.WebApiProxy
 			return GetAsync<ReadOnlyCollection<string>>(url);
 		}
 	}
-	public interface IPaymentMethodClient : IControllerClient
+	public interface IPaymentMethodClient : AdventureWorks.UILogic.WebApiProxy.IControllerClient
 	{
 		Task<ICollection<PaymentMethod>> GetAllAsync();
 		Task<bool> PostAddressAsync(PaymentMethod paymentMethod);
 		Task<bool> PutAsync(string defaultPaymentMethodId);
 	}
-	public class PaymentMethodClient : ControllerClient, IPaymentMethodClient
+	public class PaymentMethodClient : AdventureWorks.UILogic.WebApiProxy.ControllerClient, IPaymentMethodClient
 	{
 		public PaymentMethodClient(HttpClientHandler handler, Uri baseUri) : base(handler, baseUri)
 		{ }

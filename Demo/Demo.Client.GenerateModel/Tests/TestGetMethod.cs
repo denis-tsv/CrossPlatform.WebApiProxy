@@ -4,20 +4,14 @@ using System.Globalization;
 using System.Linq;
 using Xunit;
 
-#if NETFX_CORE
-using Demo.Client.Universal.WebApiProxy;
-using Demo.Model;
-using System.Reflection;
+#if GENERATE_MODEL
+using Demo.Client.GenerateModel.WebApiProxy;
 #else
-using Demo.Client.WPF.WebApiProxy;
+using Demo.Client.UseSharedModel.WebApiProxy;
 using Demo.Model;
 #endif
 
-#if NETFX_CORE
-namespace Demo.Client.Universal.Tests
-#else
-namespace Demo.Client.WPF.Tests
-#endif
+namespace Demo.Client.Tests
 {
     public class PropertiesComparer<T> : IEqualityComparer<T>
     {
