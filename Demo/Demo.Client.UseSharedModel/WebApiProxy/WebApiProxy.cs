@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-
 
 // additional namespaces
 using Demo.Model;
 
 namespace Demo.Client.UseSharedModel.WebApiProxy
 {
-	public interface ITestPostMethodClient : IControllerClient
+	public interface ITestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		Task PostXAsync(int x);
 		Task<int> PostIdAsync(int id, string str);
 	}
-	public class TestPostMethodClient : ControllerClient, ITestPostMethodClient
+	public class TestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestPostMethodClient
 	{
 		public TestPostMethodClient(Uri baseUrl) : base(baseUrl)
 		{ }
@@ -32,14 +32,14 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 			return PostAsync<int>(url, str);
 		}
 	}
-	public interface ITestPutMethodClient : IControllerClient
+	public interface ITestPutMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		Task<User> PutProxyParameterSourceAsync(User user);
 		Task PutVoidAsync(User user);
 		Task PutTaskAsync(User user);
 		Task PutResponseTypeVoidAsync(int id, User user);
 	}
-	public class TestPutMethodClient : ControllerClient, ITestPutMethodClient
+	public class TestPutMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestPutMethodClient
 	{
 		public TestPutMethodClient(Uri baseUrl) : base(baseUrl)
 		{ }
@@ -83,7 +83,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 	/// Controller documentation
 	/// multiline
 	/// </summary>
-	public interface ITestDocumentationClient : IControllerClient
+	public interface ITestDocumentationClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		/// <summary>
 		/// Method documentation
@@ -95,7 +95,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		Task<string> PostWithDocumentationAsync(string urlParam, string bodyParam);
 		Task<string> PostWithEmptyDocumentationAsync(string doc);
 	}
-	public class TestDocumentationClient : ControllerClient, ITestDocumentationClient
+	public class TestDocumentationClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestDocumentationClient
 	{
 		public TestDocumentationClient(Uri baseUrl) : base(baseUrl)
 		{ }
@@ -114,7 +114,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 			return PostAsync<string>(url, doc);
 		}
 	}
-	public interface ITestDeleteMethodClient : IControllerClient
+	public interface ITestDeleteMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		Task DeleteAsync(int id);
 		Task<int> DeleteArrayAsync(string[] codes);
@@ -122,7 +122,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		Task<DateTimeOffset> DeleteDateTimeOffsetAsync(DateTimeOffset offset);
 		Task<DataAnnotationsModel> DeleteDataAnnotationsModelAsync(DataAnnotationsModel model);
 	}
-	public class TestDeleteMethodClient : ControllerClient, ITestDeleteMethodClient
+	public class TestDeleteMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestDeleteMethodClient
 	{
 		public TestDeleteMethodClient(Uri baseUrl) : base(baseUrl)
 		{ }
@@ -165,13 +165,12 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		{
 			var url = "api/TestDeleteMethod/DeleteFormatPropertyModel";
 
-			url = AppendParameter(url, "DateTime", model.DateTime, "{0:o}");
-			url = AppendParameter(url, "DateTimeOffset", model.DateTimeOffset, "{0:o}");
+			url = AppendParametersFromPropertiesOnRuntime(url, "model", model, false);
 
 			return DeleteAsync<DataAnnotationsModel>(url);
 		}
 	}
-	public interface ITestGetMethodClient : IControllerClient
+	public interface ITestGetMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		Task<int> GetSimpleAsync();
 		Task<AllDataTypesModel> GetClassAsync();
@@ -203,7 +202,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		// Unable to generate proxy method for GetTaskHttpResponseMessage. Please specify the return value by ResponseType attribute
 		Task<AllDataTypesModel> GetTaskIHttpActionResultWithResponseTypeAsync();
 	}
-	public class TestGetMethodClient : ControllerClient, ITestGetMethodClient
+	public class TestGetMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestGetMethodClient
 	{
 		public TestGetMethodClient(Uri baseUrl) : base(baseUrl)
 		{ }
@@ -301,9 +300,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		{
 			var url = "api/TestGetMethod/GetWithOneCustomParam";
 
-			url = AppendParameter(url, "Name", u.Name);
-			url = AppendParameter(url, "Id", u.Id);
-			url = AppendParameter(url, "Code", u.Code);
+			url = AppendParametersFromPropertiesOnRuntime(url, "u", u, false);
 
 			return GetAsync<User>(url);
 		}
@@ -313,9 +310,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 
 			url = AppendParameter(url, "str", str);
 
-			url = AppendParameter(url, "Name", u.Name);
-			url = AppendParameter(url, "Id", u.Id);
-			url = AppendParameter(url, "Code", u.Code);
+			url = AppendParametersFromPropertiesOnRuntime(url, "u", u, false);
 
 			return GetAsync<string>(url);
 		}
@@ -325,15 +320,7 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 
 			url = AppendParameter(url, "str", str);
 
-			url = AppendParameter(url, "Data", filter.Data);
-			foreach (var item in filter.IntList)
-			{
-				url = AppendParameter(url, "IntList", item);
-			}
-			foreach (var item in filter.EnumArray)
-			{
-				url = AppendParameter(url, "EnumArray", item);
-			}
+			url = AppendParametersFromPropertiesOnRuntime(url, "filter", filter, false);
 
 			return GetAsync<NestedArrayFilter>(url);
 		}
@@ -341,32 +328,9 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 		{
 			var url = "api/TestGetMethod/GetWithTwoCustomParam";
 
-			url = AppendParameter(url, "x.Byte", x.Byte);
-			url = AppendParameter(url, "x.Sbyte", x.Sbyte);
-			url = AppendParameter(url, "x.Short", x.Short);
-			url = AppendParameter(url, "x.Ushort", x.Ushort);
-			url = AppendParameter(url, "x.Int", x.Int);
-			url = AppendParameter(url, "x.Uint", x.Uint);
-			url = AppendParameter(url, "x.Long", x.Long);
-			url = AppendParameter(url, "x.Ulong", x.Ulong);
-			url = AppendParameter(url, "x.Float", x.Float);
-			url = AppendParameter(url, "x.Double", x.Double);
-			url = AppendParameter(url, "x.Decimal", x.Decimal);
-			url = AppendParameter(url, "x.Char", x.Char);
-			url = AppendParameter(url, "x.String", x.String);
-			url = AppendParameter(url, "x.Bool", x.Bool);
-			url = AppendParameter(url, "x.DateTime", x.DateTime);
-			url = AppendParameter(url, "x.TimeSpan", x.TimeSpan);
-			url = AppendParameter(url, "x.DateTimeOffset", x.DateTimeOffset);
-			url = AppendParameter(url, "x.Guid", x.Guid);
-			url = AppendParameter(url, "x.NullableInt", x.NullableInt);
-			url = AppendParameter(url, "x.NullableDouble", x.NullableDouble);
-			url = AppendParameter(url, "x.NullableDateTime", x.NullableDateTime);
-			url = AppendParameter(url, "x.NullableGuid", x.NullableGuid);
+			url = AppendParametersFromPropertiesOnRuntime(url, "x", x, true);
 
-			url = AppendParameter(url, "u.Name", u.Name);
-			url = AppendParameter(url, "u.Id", u.Id);
-			url = AppendParameter(url, "u.Code", u.Code);
+			url = AppendParametersFromPropertiesOnRuntime(url, "u", u, true);
 
 			url = AppendParameter(url, "intParam", intParam);
 

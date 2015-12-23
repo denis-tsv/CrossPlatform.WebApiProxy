@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>CrossPlatform.WebApiProxy.CSharpProxyGenerator</id>
+        <version>1.0.0</version>
+        <authors>Denis Tsvettsih</authors>
+        <owners>denist</owners>
+        <projectUrl>https://github.com/denis-tsv/CrossPlatform.WebApiProxy</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Generates a C# proxy for communicating with ASP.NET MVC WebAPI Controllers</description>
+        <tags>AspNet WebApi PRoxy</tags>
+        <dependencies>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\Demo\Demo.Client.GenerateModel\WebApiProxy\ControllerClient.cs" target="content\WebApiProxy\ControllerClient.cs" />
+        <file src="..\..\Demo\Demo.Client.GenerateModel\WebApiProxy\ProxyGeneratorConfiguration.xml" target="content\WebApiProxy\ProxyGeneratorConfiguration.xml" />
+        <file src="..\..\Demo\Demo.Client.GenerateModel\WebApiProxy\WebApiProxy.cs" target="content\WebApiProxy\WebApiProxy.cs" />
+        <file src="..\WebApiProxy.Client.CSharpProxyGenerator\bin\Release\Newtonsoft.Json.dll" target="tools\Generator\Newtonsoft.Json.dll" />
+        <file src="..\WebApiProxy.Client.CSharpProxyGenerator\bin\Release\System.Net.Http.Formatting.dll" target="tools\Generator\System.Net.Http.Formatting.dll" />
+        <file src="..\WebApiProxy.Client.CSharpProxyGenerator\bin\Release\WebApiProxy.Client.CSharpProxyGenerator.exe" target="tools\Generator\WebApiProxy.Client.CSharpProxyGenerator.exe" />
+        <file src="..\WebApiProxy.Client.CSharpProxyGenerator\bin\Release\WebApiProxy.Common.dll" target="tools\Generator\WebApiProxy.Common.dll" />
+    </files>
+</package>

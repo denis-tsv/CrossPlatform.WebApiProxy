@@ -112,6 +112,14 @@
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebApiProxy.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.Common.1.0.0\lib\portable-net4+sl5+wp8+win8\WebApiProxy.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebApiProxy.Server.MetadataGenerator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.DescriptionGenerator.1.0.0\lib\net45\WebApiProxy.Server.MetadataGenerator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -224,14 +232,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Generator\WebApiProxy.Common\WebApiProxy.Common.csproj">
-      <Project>{0bd38cfa-e428-457c-93db-cea7b84952f8}</Project>
-      <Name>WebApiProxy.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Generator\WebApiProxy.Server.DescriptionGenerator\WebApiProxy.Server.DescriptionGenerator.csproj">
-      <Project>{681c3cfc-75c1-40b2-957e-28d5c7b784fa}</Project>
-      <Name>WebApiProxy.Server.DescriptionGenerator</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Demo.Model\Demo.Model.csproj">
       <Project>{46f6154b-ef97-44da-a966-8d0528e51d66}</Project>
       <Name>Demo.Model</Name>

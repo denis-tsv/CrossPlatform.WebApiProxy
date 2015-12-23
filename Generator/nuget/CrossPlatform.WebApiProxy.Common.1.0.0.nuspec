@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>CrossPlatform.WebApiProxy.Common</id>
+        <version>1.0.0</version>
+        <authors>Denis Tsvettsih</authors>
+        <owners>denist</owners>
+        <projectUrl>https://github.com/denis-tsv/CrossPlatform.WebApiProxy</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Contains data model and annotations for generating description of ASP.NET MVC WebAPI</description>
+        <tags>WebApi</tags>
+    </metadata>
+    <files>
+        <file src="..\WebApiProxy.Common\bin\Release\WebApiProxy.Common.dll" target="lib\portable-net4+sl5+wp8+win8\WebApiProxy.Common.dll" />
+    </files>
+</package>
