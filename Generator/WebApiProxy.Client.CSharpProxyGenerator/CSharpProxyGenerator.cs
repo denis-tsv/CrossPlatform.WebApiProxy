@@ -153,7 +153,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
             if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged && string.IsNullOrEmpty(modelDescription.BaseModelName))
             {
-                sb.Append($" : INotifyPropertyChanged");
+                sb.Append(" : INotifyPropertyChanged");
             }
 
             sb.AppendLine();
@@ -463,7 +463,7 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
         }
     }
 
-    static class SBExt
+    static class StringBuilderExtensions
     {
         private static void AddTabs(StringBuilder sb, int tabs)
         {

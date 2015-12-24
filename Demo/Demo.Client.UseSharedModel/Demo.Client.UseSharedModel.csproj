@@ -151,7 +151,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)packages\CrossPlatform.WebApiProxy.CSharpProxyGenerator.1.0.0\tools\Generator\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)packages\CrossPlatform.WebApiProxy.CSharpProxyGenerator.1.0.1\tools\Generator\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

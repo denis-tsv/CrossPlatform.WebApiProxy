@@ -19,7 +19,6 @@ namespace Demo.Server.WebHost
             // Web API routes
             config.MapHttpAttributeRoutes();
            
-#if DEBUG
             var route = config.Routes.CreateRoute(
                 routeTemplate: "api/meta",
                 defaults: new HttpRouteValueDictionary("route"),
@@ -27,7 +26,6 @@ namespace Demo.Server.WebHost
                 dataTokens: null,
                 handler: new WebApiDescriptionHandler(config) { InnerHandler = new HttpControllerDispatcher(config) });
             config.Routes.Add("meta", route);
-#endif
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
