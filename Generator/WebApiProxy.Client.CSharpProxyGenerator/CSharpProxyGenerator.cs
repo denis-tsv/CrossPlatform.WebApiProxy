@@ -57,7 +57,8 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;"); 
             sb.AppendLine("using System.Collections.ObjectModel;");
-            sb.AppendLine("using System.Threading.Tasks;");
+            sb.AppendLine("using System.Threading.Tasks;"); 
+            sb.AppendLine("using System.ComponentModel;");
             sb.AppendLine();
 
             if (_proxyGeneratorConfiguration.AdditionalNamespaces != null)
@@ -149,20 +150,71 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             {
                 sb.Append($" : {modelDescription.BaseModelName}");
             }
+
+            if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged && string.IsNullOrEmpty(modelDescription.BaseModelName))
+            {
+                sb.Append($" : INotifyPropertyChanged");
+            }
+
             sb.AppendLine();
 
             sb.AppendLine(tabs, "{");
-
-            string virtualValue = modelDescription.IsValueType ? "" : "virtual";
-            foreach (var prop in modelDescription.PropertyDescriptions)
+            if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged)
             {
-                AddDocumentation(sb, prop.Documentation, tabs + 1);
+                foreach (var property in modelDescription.PropertyDescriptions)
+                {
+                    var fieldName = "_" + property.Name.Substring(0, 1).ToLower() + property.Name.Substring(1);
+                    sb.AppendLine(tabs + 1, $"private {property.Type} {fieldName};");
+                }
+            }
 
-                sb.Append(tabs + 1, $"public {virtualValue} {prop.Type} {prop.Name} ");
-                sb.AppendLine("{ get; set; }");
+            foreach (var property in modelDescription.PropertyDescriptions)
+            {
+                AddModelProperty(sb, property, modelDescription.IsValueType, tabs + 1);
+            }
+
+            if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged && string.IsNullOrEmpty(modelDescription.BaseModelName))
+            {
+                sb.AppendLine(tabs + 1 ,"public event PropertyChangedEventHandler PropertyChanged;");
+                var access = modelDescription.IsValueType ? "private" : "protected virtual";
+                sb.AppendLine(tabs + 1, $"{access} void OnPropertyChanged(string propertyName)");
+                sb.AppendLine(tabs + 1, "{");
+                sb.AppendLine(tabs + 2, "var handler = PropertyChanged;");
+                sb.AppendLine(tabs + 2, "if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));");
+                sb.AppendLine(tabs + 1, "}");
             }
 
             sb.AppendLine(tabs, "}");
+        }
+
+        private void AddModelProperty(StringBuilder sb, ModelPropertyDescription property, bool isValueType, int tabs)
+        {
+            var fieldName = "_" + property.Name.Substring(0, 1).ToLower() + property.Name.Substring(1);
+            string virtualValue = isValueType ? "" : "virtual";
+
+            AddDocumentation(sb, property.Documentation, tabs);
+
+            sb.Append(tabs, $"public {virtualValue} {property.Type} {property.Name} ");
+            if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged)
+            {
+                sb.AppendLine();
+                sb.AppendLine(tabs, "{");
+                sb.AppendLine(tabs + 1, "get { return " + fieldName + "; }");
+                sb.AppendLine(tabs + 1, "set");
+                sb.AppendLine(tabs + 1, "{");
+                sb.AppendLine(tabs + 2, $"if (!{fieldName}.Equals(value))");
+                sb.AppendLine(tabs + 2, "{");
+                sb.AppendLine(tabs + 3, $"{fieldName} = value;");
+                sb.AppendLine(tabs + 3, $"OnPropertyChanged(\"{property.Name}\");");
+                sb.AppendLine(tabs + 2, "}");
+                sb.AppendLine(tabs + 1, "}");
+
+                sb.AppendLine(tabs, "}");
+            }
+            else
+            {
+                sb.AppendLine("{ get; set; }");
+            }
         }
 
         private void AddProxyImplementation(StringBuilder sb, ControllerDescription controllerDescription, int tabs)

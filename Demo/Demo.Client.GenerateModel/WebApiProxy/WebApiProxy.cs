@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 // additional namespaces
 
@@ -9,66 +10,498 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 {
 	public  partial class User : LayerSupertype
 	{
-		public virtual string Name { get; set; }
+		private string _name;
+		public virtual string Name 
+		{
+			get { return _name; }
+			set
+			{
+				if (!_name.Equals(value))
+				{
+					_name = value;
+					OnPropertyChanged("Name");
+				}
+			}
+		}
 	}
 	/// <summary>
 	/// Class documentation
 	/// </summary>
-	public abstract partial class LayerSupertype
+	public abstract partial class LayerSupertype : INotifyPropertyChanged
 	{
+		private int _id;
+		private string _code;
 		/// <summary>
 		/// Property documentation
 		/// </summary>
-		public virtual int Id { get; set; }
-		public virtual string Code { get; set; }
+		public virtual int Id 
+		{
+			get { return _id; }
+			set
+			{
+				if (!_id.Equals(value))
+				{
+					_id = value;
+					OnPropertyChanged("Id");
+				}
+			}
+		}
+		public virtual string Code 
+		{
+			get { return _code; }
+			set
+			{
+				if (!_code.Equals(value))
+				{
+					_code = value;
+					OnPropertyChanged("Code");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
-	public  partial class DataAnnotationsModel
+	public  partial class DataAnnotationsModel : INotifyPropertyChanged
 	{
-		public virtual DateTime DateTime { get; set; }
-		public virtual DateTimeOffset DateTimeOffset { get; set; }
+		private DateTime _dateTime;
+		private DateTimeOffset _dateTimeOffset;
+		public virtual DateTime DateTime 
+		{
+			get { return _dateTime; }
+			set
+			{
+				if (!_dateTime.Equals(value))
+				{
+					_dateTime = value;
+					OnPropertyChanged("DateTime");
+				}
+			}
+		}
+		public virtual DateTimeOffset DateTimeOffset 
+		{
+			get { return _dateTimeOffset; }
+			set
+			{
+				if (!_dateTimeOffset.Equals(value))
+				{
+					_dateTimeOffset = value;
+					OnPropertyChanged("DateTimeOffset");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
-	public  partial class AllDataTypesModel
+	public  partial class AllDataTypesModel : INotifyPropertyChanged
 	{
-		public virtual byte Byte { get; set; }
-		public virtual sbyte Sbyte { get; set; }
-		public virtual short Short { get; set; }
-		public virtual ushort Ushort { get; set; }
-		public virtual int Int { get; set; }
-		public virtual uint Uint { get; set; }
-		public virtual long Long { get; set; }
-		public virtual ulong Ulong { get; set; }
-		public virtual float Float { get; set; }
-		public virtual double Double { get; set; }
-		public virtual decimal Decimal { get; set; }
-		public virtual char Char { get; set; }
-		public virtual string String { get; set; }
-		public virtual bool Bool { get; set; }
-		public virtual DateTime DateTime { get; set; }
-		public virtual TimeSpan TimeSpan { get; set; }
-		public virtual DateTimeOffset DateTimeOffset { get; set; }
-		public virtual Guid Guid { get; set; }
-		public virtual int? NullableInt { get; set; }
-		public virtual double? NullableDouble { get; set; }
-		public virtual DateTime? NullableDateTime { get; set; }
-		public virtual Guid? NullableGuid { get; set; }
+		private byte _byte;
+		private sbyte _sbyte;
+		private short _short;
+		private ushort _ushort;
+		private int _int;
+		private uint _uint;
+		private long _long;
+		private ulong _ulong;
+		private float _float;
+		private double _double;
+		private decimal _decimal;
+		private char _char;
+		private string _string;
+		private bool _bool;
+		private DateTime _dateTime;
+		private TimeSpan _timeSpan;
+		private DateTimeOffset _dateTimeOffset;
+		private Guid _guid;
+		private int? _nullableInt;
+		private double? _nullableDouble;
+		private DateTime? _nullableDateTime;
+		private Guid? _nullableGuid;
+		public virtual byte Byte 
+		{
+			get { return _byte; }
+			set
+			{
+				if (!_byte.Equals(value))
+				{
+					_byte = value;
+					OnPropertyChanged("Byte");
+				}
+			}
+		}
+		public virtual sbyte Sbyte 
+		{
+			get { return _sbyte; }
+			set
+			{
+				if (!_sbyte.Equals(value))
+				{
+					_sbyte = value;
+					OnPropertyChanged("Sbyte");
+				}
+			}
+		}
+		public virtual short Short 
+		{
+			get { return _short; }
+			set
+			{
+				if (!_short.Equals(value))
+				{
+					_short = value;
+					OnPropertyChanged("Short");
+				}
+			}
+		}
+		public virtual ushort Ushort 
+		{
+			get { return _ushort; }
+			set
+			{
+				if (!_ushort.Equals(value))
+				{
+					_ushort = value;
+					OnPropertyChanged("Ushort");
+				}
+			}
+		}
+		public virtual int Int 
+		{
+			get { return _int; }
+			set
+			{
+				if (!_int.Equals(value))
+				{
+					_int = value;
+					OnPropertyChanged("Int");
+				}
+			}
+		}
+		public virtual uint Uint 
+		{
+			get { return _uint; }
+			set
+			{
+				if (!_uint.Equals(value))
+				{
+					_uint = value;
+					OnPropertyChanged("Uint");
+				}
+			}
+		}
+		public virtual long Long 
+		{
+			get { return _long; }
+			set
+			{
+				if (!_long.Equals(value))
+				{
+					_long = value;
+					OnPropertyChanged("Long");
+				}
+			}
+		}
+		public virtual ulong Ulong 
+		{
+			get { return _ulong; }
+			set
+			{
+				if (!_ulong.Equals(value))
+				{
+					_ulong = value;
+					OnPropertyChanged("Ulong");
+				}
+			}
+		}
+		public virtual float Float 
+		{
+			get { return _float; }
+			set
+			{
+				if (!_float.Equals(value))
+				{
+					_float = value;
+					OnPropertyChanged("Float");
+				}
+			}
+		}
+		public virtual double Double 
+		{
+			get { return _double; }
+			set
+			{
+				if (!_double.Equals(value))
+				{
+					_double = value;
+					OnPropertyChanged("Double");
+				}
+			}
+		}
+		public virtual decimal Decimal 
+		{
+			get { return _decimal; }
+			set
+			{
+				if (!_decimal.Equals(value))
+				{
+					_decimal = value;
+					OnPropertyChanged("Decimal");
+				}
+			}
+		}
+		public virtual char Char 
+		{
+			get { return _char; }
+			set
+			{
+				if (!_char.Equals(value))
+				{
+					_char = value;
+					OnPropertyChanged("Char");
+				}
+			}
+		}
+		public virtual string String 
+		{
+			get { return _string; }
+			set
+			{
+				if (!_string.Equals(value))
+				{
+					_string = value;
+					OnPropertyChanged("String");
+				}
+			}
+		}
+		public virtual bool Bool 
+		{
+			get { return _bool; }
+			set
+			{
+				if (!_bool.Equals(value))
+				{
+					_bool = value;
+					OnPropertyChanged("Bool");
+				}
+			}
+		}
+		public virtual DateTime DateTime 
+		{
+			get { return _dateTime; }
+			set
+			{
+				if (!_dateTime.Equals(value))
+				{
+					_dateTime = value;
+					OnPropertyChanged("DateTime");
+				}
+			}
+		}
+		public virtual TimeSpan TimeSpan 
+		{
+			get { return _timeSpan; }
+			set
+			{
+				if (!_timeSpan.Equals(value))
+				{
+					_timeSpan = value;
+					OnPropertyChanged("TimeSpan");
+				}
+			}
+		}
+		public virtual DateTimeOffset DateTimeOffset 
+		{
+			get { return _dateTimeOffset; }
+			set
+			{
+				if (!_dateTimeOffset.Equals(value))
+				{
+					_dateTimeOffset = value;
+					OnPropertyChanged("DateTimeOffset");
+				}
+			}
+		}
+		public virtual Guid Guid 
+		{
+			get { return _guid; }
+			set
+			{
+				if (!_guid.Equals(value))
+				{
+					_guid = value;
+					OnPropertyChanged("Guid");
+				}
+			}
+		}
+		public virtual int? NullableInt 
+		{
+			get { return _nullableInt; }
+			set
+			{
+				if (!_nullableInt.Equals(value))
+				{
+					_nullableInt = value;
+					OnPropertyChanged("NullableInt");
+				}
+			}
+		}
+		public virtual double? NullableDouble 
+		{
+			get { return _nullableDouble; }
+			set
+			{
+				if (!_nullableDouble.Equals(value))
+				{
+					_nullableDouble = value;
+					OnPropertyChanged("NullableDouble");
+				}
+			}
+		}
+		public virtual DateTime? NullableDateTime 
+		{
+			get { return _nullableDateTime; }
+			set
+			{
+				if (!_nullableDateTime.Equals(value))
+				{
+					_nullableDateTime = value;
+					OnPropertyChanged("NullableDateTime");
+				}
+			}
+		}
+		public virtual Guid? NullableGuid 
+		{
+			get { return _nullableGuid; }
+			set
+			{
+				if (!_nullableGuid.Equals(value))
+				{
+					_nullableGuid = value;
+					OnPropertyChanged("NullableGuid");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 	/// <summary>
 	/// Struct documentation
 	/// </summary>
-	public  partial struct MyPointStruct
+	public  partial struct MyPointStruct : INotifyPropertyChanged
 	{
-		public  int X { get; set; }
+		private int _x;
+		public  int X 
+		{
+			get { return _x; }
+			set
+			{
+				if (!_x.Equals(value))
+				{
+					_x = value;
+					OnPropertyChanged("X");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
-	public  partial class MyTask
+	public  partial class MyTask : INotifyPropertyChanged
 	{
-		public virtual string Name { get; set; }
-		public virtual MyTask ParenTask { get; set; }
+		private string _name;
+		private MyTask _parenTask;
+		public virtual string Name 
+		{
+			get { return _name; }
+			set
+			{
+				if (!_name.Equals(value))
+				{
+					_name = value;
+					OnPropertyChanged("Name");
+				}
+			}
+		}
+		public virtual MyTask ParenTask 
+		{
+			get { return _parenTask; }
+			set
+			{
+				if (!_parenTask.Equals(value))
+				{
+					_parenTask = value;
+					OnPropertyChanged("ParenTask");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
-	public  partial class NestedArrayFilter
+	public  partial class NestedArrayFilter : INotifyPropertyChanged
 	{
-		public virtual string Data { get; set; }
-		public virtual List<int> IntList { get; set; }
-		public virtual EnumModel[] EnumArray { get; set; }
+		private string _data;
+		private List<int> _intList;
+		private EnumModel[] _enumArray;
+		public virtual string Data 
+		{
+			get { return _data; }
+			set
+			{
+				if (!_data.Equals(value))
+				{
+					_data = value;
+					OnPropertyChanged("Data");
+				}
+			}
+		}
+		public virtual List<int> IntList 
+		{
+			get { return _intList; }
+			set
+			{
+				if (!_intList.Equals(value))
+				{
+					_intList = value;
+					OnPropertyChanged("IntList");
+				}
+			}
+		}
+		public virtual EnumModel[] EnumArray 
+		{
+			get { return _enumArray; }
+			set
+			{
+				if (!_enumArray.Equals(value))
+				{
+					_enumArray = value;
+					OnPropertyChanged("EnumArray");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 	/// <summary>
 	/// Enum documentation

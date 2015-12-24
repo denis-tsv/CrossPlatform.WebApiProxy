@@ -10,6 +10,7 @@
         public string BaseProxyInterface { get; set; }
         public string ProxyConstructor { get; set; }
         public string Suffix { get; set; }
+        public bool ImplementINotifyPropertyChanged { get; set; }
 
     }
 }
