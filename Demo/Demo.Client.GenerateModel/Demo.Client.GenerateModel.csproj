@@ -83,8 +83,10 @@
     <Compile Include="..\Demo.Model\AllDataTypesModel.Shared.cs">
       <Link>Model\AllDataTypesModel.Shared.cs</Link>
     </Compile>
+    <Compile Include="Model\IgnoredModel.cs" />
     <Compile Include="Tests\TestDeleteMethod.cs" />
     <Compile Include="Tests\TestGetMethod.cs" />
+    <Compile Include="Tests\TestIgnoreModel.cs" />
     <Compile Include="Tests\TestPostMethod.cs" />
     <Compile Include="Tests\TestPutMethod.cs" />
     <Compile Include="WebApiProxy\ControllerClient.cs" />

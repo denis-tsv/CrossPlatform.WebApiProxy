@@ -5,10 +5,13 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using WebApiProxy.Common.DataAnnotations;
 using WebApiProxy.Common.Model;
 using WebApiProxy.Server.MetadataGenerator.Documentation;
@@ -136,6 +139,34 @@ namespace WebApiProxy.Server.MetadataGenerator
             return ParseTypeName(returnType);
         }
 
+        private static bool ShouldDisplayMember(MemberInfo member, bool hasDataContractAttribute)
+        {
+            ProxyIgnoreAttribute proxyIgnore = member.GetCustomAttribute<ProxyIgnoreAttribute>();
+            JsonIgnoreAttribute jsonIgnore = member.GetCustomAttribute<JsonIgnoreAttribute>();
+            XmlIgnoreAttribute xmlIgnore = member.GetCustomAttribute<XmlIgnoreAttribute>();
+            IgnoreDataMemberAttribute ignoreDataMember = member.GetCustomAttribute<IgnoreDataMemberAttribute>();
+            ApiExplorerSettingsAttribute apiExplorerSetting = member.GetCustomAttribute<ApiExplorerSettingsAttribute>();
+
+            bool hasMemberAttribute = member.DeclaringType.IsEnum ?
+                member.GetCustomAttribute<EnumMemberAttribute>() != null :
+                member.GetCustomAttribute<DataMemberAttribute>() != null;
+
+            // Display member only if all the followings are true:
+            // no ProxyIgnoreAttribute
+            // no JsonIgnoreAttribute
+            // no XmlIgnoreAttribute
+            // no IgnoreDataMemberAttribute
+            // no NonSerializedAttribute
+            // no ApiExplorerSettingsAttribute with IgnoreApi set to true
+            // no DataContractAttribute without DataMemberAttribute or EnumMemberAttribute
+            return proxyIgnore == null &&
+                jsonIgnore == null &&
+                xmlIgnore == null &&
+                ignoreDataMember == null &&
+                (apiExplorerSetting == null || !apiExplorerSetting.IgnoreApi) &&
+                (!hasDataContractAttribute || hasMemberAttribute);
+        }
+
         private List<ParameterDescription> GetUrlParameters(ApiDescription apiDescription)
         {
             var result = new List<ParameterDescription>();
@@ -223,6 +254,7 @@ namespace WebApiProxy.Server.MetadataGenerator
 
             if (type.FullName.StartsWith("System.")) return;
             if (_modelDescriptions.ContainsKey(type.FullName)) return;
+            if (type.GetCustomAttribute<ProxyIgnoreAttribute>() != null) return;
 
             Debug.Assert(!type.IsGenericType);
 
@@ -247,14 +279,16 @@ namespace WebApiProxy.Server.MetadataGenerator
                 modelDescription.BaseModelName = type.BaseType.Name;
             }
 
-            var publicProperties = type.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance)
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance)
                 .Where(p => p.CanRead && p.GetMethod.IsPublic && 
                             p.CanWrite && p.SetMethod.IsPublic);
-            var properties = publicProperties.Where(p => p.GetCustomAttribute<ProxyIgnoreAttribute>() == null);
 
+            bool hasDataContractAttribute = type.GetCustomAttribute<DataContractAttribute>() != null;
             var modelProperties = new List<ModelPropertyDescription>();
             foreach (var property in properties)
             {
+                if (!ShouldDisplayMember(property, hasDataContractAttribute)) continue;
+
                 var modelProperty = new ModelPropertyDescription
                 {
                     Name = property.Name,
@@ -284,10 +318,13 @@ namespace WebApiProxy.Server.MetadataGenerator
                 Documentation = _modelDocumentationProvider.GetDocumentation(type)
             };
 
+            bool hasDataContractAttribute = type.GetCustomAttribute<DataContractAttribute>() != null;
             var members = type.GetFields(BindingFlags.Public | BindingFlags.Static);
             var enumProperties = new List<EnumPropertyDescription>();
             foreach (var fieldInfo in members)
             {
+                if (!ShouldDisplayMember(fieldInfo, hasDataContractAttribute)) continue;
+                
                 var desc = new EnumPropertyDescription
                 {
                     Name = fieldInfo.Name,

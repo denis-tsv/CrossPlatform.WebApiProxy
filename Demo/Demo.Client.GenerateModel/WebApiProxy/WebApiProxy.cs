@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 // additional namespaces
+using Demo.Model;
 
 namespace Demo.Client.GenerateModel.WebApiProxy
 {
@@ -55,6 +56,50 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 				{
 					_code = value;
 					OnPropertyChanged("Code");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	public  partial class ModelWithIgnoredProperties : INotifyPropertyChanged
+	{
+		private string _notIgnored;
+		public virtual string NotIgnored 
+		{
+			get { return _notIgnored; }
+			set
+			{
+				if (!_notIgnored.Equals(value))
+				{
+					_notIgnored = value;
+					OnPropertyChanged("NotIgnored");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	public  partial class DataContractModel : INotifyPropertyChanged
+	{
+		private string _hasDataMember;
+		public virtual string HasDataMember 
+		{
+			get { return _hasDataMember; }
+			set
+			{
+				if (!_hasDataMember.Equals(value))
+				{
+					_hasDataMember = value;
+					OnPropertyChanged("HasDataMember");
 				}
 			}
 		}
@@ -503,6 +548,10 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
+	public enum DataContractEnumModel
+	{
+		HasEnumMember = 0,
+	}
 	/// <summary>
 	/// Enum documentation
 	/// </summary>
@@ -513,30 +562,6 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 		/// </summary>
 		Value1 = 1024,
 		Value2 = 1025,
-	}
-	public interface ITestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
-	{
-		Task PostXAsync(int x);
-		Task<int> PostIdAsync(int id, string str);
-	}
-	public class TestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, ITestPostMethodClient
-	{
-		public TestPostMethodClient(Uri baseUrl) : base(baseUrl)
-		{ }
-		public Task PostXAsync(int x)
-		{
-			var url = "api/TestPostMethod/PostX";
-
-			return PostNoResultAsync(url, x);
-		}
-		public Task<int> PostIdAsync(int id, string str)
-		{
-			var url = "api/TestPostMethod/{id}/PostId";
-
-			url = url.Replace("{id}", ConvertToString(id) );
-
-			return PostAsync<int>(url, str);
-		}
 	}
 	public interface ITestPutMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
 	{
@@ -583,6 +608,66 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			url = url.Replace("{id}", ConvertToString(id) );
 
 			return PutNoResultAsync(url, user);
+		}
+	}
+	public interface ITestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
+	{
+		Task PostXAsync(int x);
+		Task<int> PostIdAsync(int id, string str);
+	}
+	public class TestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, ITestPostMethodClient
+	{
+		public TestPostMethodClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task PostXAsync(int x)
+		{
+			var url = "api/TestPostMethod/PostX";
+
+			return PostNoResultAsync(url, x);
+		}
+		public Task<int> PostIdAsync(int id, string str)
+		{
+			var url = "api/TestPostMethod/{id}/PostId";
+
+			url = url.Replace("{id}", ConvertToString(id) );
+
+			return PostAsync<int>(url, str);
+		}
+	}
+	public interface IIgnoreModelClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
+	{
+		Task<IgnoredModel> GetIgnoredModelAsync();
+		Task<ModelWithIgnoredProperties> GetModelWithIgnoredPropertiesAsync();
+		Task<DataContractModel> GetDataContractModelAsync();
+		Task<DataContractEnumModel> GetDataContractEnumModelAsync();
+	}
+	public class IgnoreModelClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, IIgnoreModelClient
+	{
+		public IgnoreModelClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task<IgnoredModel> GetIgnoredModelAsync()
+		{
+			var url = "api/IgnoreModel/GetIgnoredModel";
+
+			return GetAsync<IgnoredModel>(url);
+		}
+		public Task<ModelWithIgnoredProperties> GetModelWithIgnoredPropertiesAsync()
+		{
+			var url = "api/IgnoreModel/GetModelWithIgnoredProperties";
+
+			return GetAsync<ModelWithIgnoredProperties>(url);
+		}
+		public Task<DataContractModel> GetDataContractModelAsync()
+		{
+			var url = "api/IgnoreModel/GetDataContractModel";
+
+			return GetAsync<DataContractModel>(url);
+		}
+		public Task<DataContractEnumModel> GetDataContractEnumModelAsync()
+		{
+			var url = "api/IgnoreModel/GetDataContractEnumModel";
+
+			return GetAsync<DataContractEnumModel>(url);
 		}
 	}
 	/// <summary>

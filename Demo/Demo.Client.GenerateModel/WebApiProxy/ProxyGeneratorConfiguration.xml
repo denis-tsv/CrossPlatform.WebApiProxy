@@ -2,6 +2,7 @@
 <ProxyGeneratorConfiguration >
   <DescriptionUrl>http://localhost:36761/api/meta</DescriptionUrl>
   <AdditionalNamespaces>
+    <string>Demo.Model</string>
   </AdditionalNamespaces>
   <GenerateModel>true</GenerateModel>
   <ImplementINotifyPropertyChanged>true</ImplementINotifyPropertyChanged>
