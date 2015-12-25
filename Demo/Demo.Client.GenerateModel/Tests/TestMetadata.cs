@@ -45,12 +45,12 @@ namespace Demo.Client.GenerateModel.Tests
         }
 
         [Fact]
-        public void GetRenamedModel()
+        public void GetDataContractRenamedModel()
         {
-            var clientType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ClientRenamedModel");
+            var clientType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ClientDataContractRenamedModel");
             Assert.NotNull(clientType);
 
-            var serverType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ServerRenamedModel");
+            var serverType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ServerDataContractRenamedModel");
             Assert.Null(serverType);
 
             var clientDataMember = clientType.GetProperty("ClientDataMemberName");
@@ -58,6 +58,16 @@ namespace Demo.Client.GenerateModel.Tests
 
             var serverDataMember = clientType.GetProperty("ServerDataMemberName");
             Assert.Null(serverDataMember);
+        }
+
+        [Fact]
+        public void GetJsonRenamedModel()
+        {
+            var clientType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ClientJsonRenamedModel");
+            Assert.NotNull(clientType);
+
+            var serverType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ServerJsonRenamedModel");
+            Assert.Null(serverType);
 
             var clientJson = clientType.GetProperty("ClientJsonName");
             Assert.NotNull(clientJson);

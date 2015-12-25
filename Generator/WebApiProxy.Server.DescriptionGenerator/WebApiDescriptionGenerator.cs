@@ -312,8 +312,13 @@ namespace WebApiProxy.Server.MetadataGenerator
 
         private string GetTypeName(Type type)
         {
-            var dataContract = type.GetCustomAttribute<DataContractAttribute>();
+            var proxyModel = type.GetCustomAttribute<ProxyModelAttribute>();
+            if (proxyModel != null && !string.IsNullOrEmpty(proxyModel.Name))
+            {
+                return proxyModel.Name;
+            }
 
+            var dataContract = type.GetCustomAttribute<DataContractAttribute>();
             if (dataContract != null && !string.IsNullOrEmpty(dataContract.Name))
             {
                 return dataContract.Name;

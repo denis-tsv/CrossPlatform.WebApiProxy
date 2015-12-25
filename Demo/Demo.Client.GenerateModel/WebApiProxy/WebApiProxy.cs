@@ -174,22 +174,9 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
-	public  partial class ClientRenamedModel : INotifyPropertyChanged
+	public  partial class ClientDataContractRenamedModel : INotifyPropertyChanged
 	{
-		private string _clientJsonName;
 		private string _clientDataMemberName;
-		public virtual string ClientJsonName 
-		{
-			get { return _clientJsonName; }
-			set
-			{
-				if (!_clientJsonName.Equals(value))
-				{
-					_clientJsonName = value;
-					OnPropertyChanged("ClientJsonName");
-				}
-			}
-		}
 		public virtual string ClientDataMemberName 
 		{
 			get { return _clientDataMemberName; }
@@ -199,6 +186,28 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 				{
 					_clientDataMemberName = value;
 					OnPropertyChanged("ClientDataMemberName");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	public  partial class ClientJsonRenamedModel : INotifyPropertyChanged
+	{
+		private string _clientJsonName;
+		public virtual string ClientJsonName 
+		{
+			get { return _clientJsonName; }
+			set
+			{
+				if (!_clientJsonName.Equals(value))
+				{
+					_clientJsonName = value;
+					OnPropertyChanged("ClientJsonName");
 				}
 			}
 		}
@@ -756,7 +765,8 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 	public interface ITestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
 	{
 		Task<MetadataModel> GetMetadataModelAsync();
-		Task<ClientRenamedModel> GetRenamedModelAsync();
+		Task<ClientDataContractRenamedModel> GetDataContractRenamedModelAsync();
+		Task<ClientJsonRenamedModel> GetJsonRenamedModelAsync();
 	}
 	public class TestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, ITestMetadataClient
 	{
@@ -768,11 +778,17 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 
 			return GetAsync<MetadataModel>(url);
 		}
-		public Task<ClientRenamedModel> GetRenamedModelAsync()
+		public Task<ClientDataContractRenamedModel> GetDataContractRenamedModelAsync()
 		{
-			var url = "api/TestMetadata/GetServerRenamedModel";
+			var url = "api/TestMetadata/GetDataContractRenamedModel";
 
-			return GetAsync<ClientRenamedModel>(url);
+			return GetAsync<ClientDataContractRenamedModel>(url);
+		}
+		public Task<ClientJsonRenamedModel> GetJsonRenamedModelAsync()
+		{
+			var url = "api/TestMetadata/GetJsonRenamedModel";
+
+			return GetAsync<ClientJsonRenamedModel>(url);
 		}
 	}
 	public interface ITestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient

@@ -3,36 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 // additional namespaces
 using Demo.Model;
 
 namespace Demo.Client.UseSharedModel.WebApiProxy
 {
-	public interface ITestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
-	{
-		Task PostXAsync(int x);
-		Task<int> PostIdAsync(int id, string str);
-	}
-	public class TestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestPostMethodClient
-	{
-		public TestPostMethodClient(Uri baseUrl) : base(baseUrl)
-		{ }
-		public Task PostXAsync(int x)
-		{
-			var url = "api/TestPostMethod/PostX";
-
-			return PostNoResultAsync(url, x);
-		}
-		public Task<int> PostIdAsync(int id, string str)
-		{
-			var url = "api/TestPostMethod/{id}/PostId";
-
-			url = url.Replace("{id}", ConvertToString(id) );
-
-			return PostAsync<int>(url, str);
-		}
-	}
 	public interface ITestPutMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
 		Task<User> PutProxyParameterSourceAsync(User user);
@@ -78,6 +55,95 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 			url = url.Replace("{id}", ConvertToString(id) );
 
 			return PutNoResultAsync(url, user);
+		}
+	}
+	public interface ITestMetadataClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
+	{
+		Task<MetadataModel> GetMetadataModelAsync();
+		Task<ClientDataContractRenamedModel> GetDataContractRenamedModelAsync();
+		Task<ClientJsonRenamedModel> GetJsonRenamedModelAsync();
+	}
+	public class TestMetadataClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestMetadataClient
+	{
+		public TestMetadataClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task<MetadataModel> GetMetadataModelAsync()
+		{
+			var url = "api/TestMetadata/GetMetadataModel";
+
+			return GetAsync<MetadataModel>(url);
+		}
+		public Task<ClientDataContractRenamedModel> GetDataContractRenamedModelAsync()
+		{
+			var url = "api/TestMetadata/GetDataContractRenamedModel";
+
+			return GetAsync<ClientDataContractRenamedModel>(url);
+		}
+		public Task<ClientJsonRenamedModel> GetJsonRenamedModelAsync()
+		{
+			var url = "api/TestMetadata/GetJsonRenamedModel";
+
+			return GetAsync<ClientJsonRenamedModel>(url);
+		}
+	}
+	public interface ITestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
+	{
+		Task PostXAsync(int x);
+		Task<int> PostIdAsync(int id, string str);
+	}
+	public class TestPostMethodClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, ITestPostMethodClient
+	{
+		public TestPostMethodClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task PostXAsync(int x)
+		{
+			var url = "api/TestPostMethod/PostX";
+
+			return PostNoResultAsync(url, x);
+		}
+		public Task<int> PostIdAsync(int id, string str)
+		{
+			var url = "api/TestPostMethod/{id}/PostId";
+
+			url = url.Replace("{id}", ConvertToString(id) );
+
+			return PostAsync<int>(url, str);
+		}
+	}
+	public interface IIgnoreModelClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
+	{
+		Task<IgnoredModel> GetIgnoredModelAsync();
+		Task<ModelWithIgnoredProperties> GetModelWithIgnoredPropertiesAsync();
+		Task<DataContractModel> GetDataContractModelAsync();
+		Task<DataContractEnumModel> GetDataContractEnumModelAsync();
+	}
+	public class IgnoreModelClient : Demo.Client.UseSharedModel.WebApiProxy.ControllerClient, IIgnoreModelClient
+	{
+		public IgnoreModelClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task<IgnoredModel> GetIgnoredModelAsync()
+		{
+			var url = "api/IgnoreModel/GetIgnoredModel";
+
+			return GetAsync<IgnoredModel>(url);
+		}
+		public Task<ModelWithIgnoredProperties> GetModelWithIgnoredPropertiesAsync()
+		{
+			var url = "api/IgnoreModel/GetModelWithIgnoredProperties";
+
+			return GetAsync<ModelWithIgnoredProperties>(url);
+		}
+		public Task<DataContractModel> GetDataContractModelAsync()
+		{
+			var url = "api/IgnoreModel/GetDataContractModel";
+
+			return GetAsync<DataContractModel>(url);
+		}
+		public Task<DataContractEnumModel> GetDataContractEnumModelAsync()
+		{
+			var url = "api/IgnoreModel/GetDataContractEnumModel";
+
+			return GetAsync<DataContractEnumModel>(url);
 		}
 	}
 	/// <summary>

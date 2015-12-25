@@ -12,10 +12,16 @@ namespace Demo.Server.WebHost.Controllers
             return new MetadataModel();
         }
 
-        [Route("GetServerRenamedModel")]
-        public ServerRenamedModel GetRenamedModel()
+        [Route("GetDataContractRenamedModel")]
+        public ServerDataContractRenamedModel GetDataContractRenamedModel()
         {
-            return new ServerRenamedModel();
+            return new ServerDataContractRenamedModel();
+        }
+
+        [Route("GetJsonRenamedModel")]
+        public ServerJsonRenamedModel GetJsonRenamedModel()
+        {
+            return new ServerJsonRenamedModel();
         }
     }
 }

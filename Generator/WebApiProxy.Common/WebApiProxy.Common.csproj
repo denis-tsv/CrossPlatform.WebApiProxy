@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="DataAnnotations\ProxyFormatAttribute.cs" />
     <Compile Include="DataAnnotations\ProxyIgnoreAttribute.cs" />
+    <Compile Include="DataAnnotations\ProxyModelAttribute.cs" />
     <Compile Include="DataAnnotations\ProxySourceAttribute.cs" />
     <Compile Include="Model\AttributeDescription.cs" />
     <Compile Include="Model\BaseDescription.cs" />

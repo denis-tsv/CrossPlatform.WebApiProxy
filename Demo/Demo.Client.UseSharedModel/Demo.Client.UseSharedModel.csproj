@@ -39,6 +39,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -90,6 +91,13 @@
     <Compile Include="..\Demo.Client.GenerateModel\Tests\TestPutMethod.cs">
       <Link>Tests\TestPutMethod.cs</Link>
     </Compile>
+    <Compile Include="Model\ClientDataContractRenamedModel.cs" />
+    <Compile Include="Model\ClientJsonRenamedModel.cs" />
+    <Compile Include="Model\DataContractEnumModel.cs" />
+    <Compile Include="Model\DataContractModel.cs" />
+    <Compile Include="Model\IgnoredModel.cs" />
+    <Compile Include="Model\MetadataModel.cs" />
+    <Compile Include="Model\ModelWithIgnoredProperties.cs" />
     <Compile Include="WebApiProxy\ControllerClient.cs" />
     <Compile Include="WebApiProxy\WebApiProxy.cs" />
     <Page Include="MainWindow.xaml">
@@ -151,7 +159,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)packages\CrossPlatform.WebApiProxy.CSharpProxyGenerator.1.0.1\tools\Generator\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PreBuildEvent>
+    <PreBuildEvent>$(SolutionDir)Generator\WebApiProxy.Client.CSharpProxyGenerator\bin\Debug\WebApiProxy.Client.CSharpProxyGenerator.exe "$(ProjectDir)WebApiProxy\ProxyGeneratorConfiguration.xml" "$(ProjectDir)WebApiProxy\WebApiProxy.cs"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
