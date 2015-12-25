@@ -177,6 +177,7 @@
     <Compile Include="Models\IgnoredModel.cs" />
     <Compile Include="Models\MetadataModel.cs" />
     <Compile Include="Models\ModelWithIgnoredProperties.cs" />
+    <Compile Include="Models\ServerRenamedModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

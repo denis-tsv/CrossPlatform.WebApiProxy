@@ -11,5 +11,11 @@ namespace Demo.Server.WebHost.Controllers
         {
             return new MetadataModel();
         }
+
+        [Route("GetServerRenamedModel")]
+        public ServerRenamedModel GetRenamedModel()
+        {
+            return new ServerRenamedModel();
+        }
     }
 }

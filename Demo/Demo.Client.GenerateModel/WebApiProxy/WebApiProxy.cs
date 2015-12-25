@@ -174,6 +174,41 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
+	public  partial class ClientRenamedModel : INotifyPropertyChanged
+	{
+		private string _clientJsonName;
+		private string _clientDataMemberName;
+		public virtual string ClientJsonName 
+		{
+			get { return _clientJsonName; }
+			set
+			{
+				if (!_clientJsonName.Equals(value))
+				{
+					_clientJsonName = value;
+					OnPropertyChanged("ClientJsonName");
+				}
+			}
+		}
+		public virtual string ClientDataMemberName 
+		{
+			get { return _clientDataMemberName; }
+			set
+			{
+				if (!_clientDataMemberName.Equals(value))
+				{
+					_clientDataMemberName = value;
+					OnPropertyChanged("ClientDataMemberName");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
 	public  partial class ModelWithIgnoredProperties : INotifyPropertyChanged
 	{
 		private string _notIgnored;
@@ -721,6 +756,7 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 	public interface ITestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
 	{
 		Task<MetadataModel> GetMetadataModelAsync();
+		Task<ClientRenamedModel> GetRenamedModelAsync();
 	}
 	public class TestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, ITestMetadataClient
 	{
@@ -731,6 +767,12 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			var url = "api/TestMetadata/GetMetadataModel";
 
 			return GetAsync<MetadataModel>(url);
+		}
+		public Task<ClientRenamedModel> GetRenamedModelAsync()
+		{
+			var url = "api/TestMetadata/GetServerRenamedModel";
+
+			return GetAsync<ClientRenamedModel>(url);
 		}
 	}
 	public interface ITestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient

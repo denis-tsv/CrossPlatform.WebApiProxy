@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Demo.Client.GenerateModel.WebApiProxy;
 using Xunit;
 
@@ -46,7 +42,28 @@ namespace Demo.Client.GenerateModel.Tests
             Assert.NotNull(strnLenWithMin);
             Assert.Equal(100, strnLenWithMin.MaximumLength);
             Assert.Equal(1, strnLenWithMin.MinimumLength);
+        }
 
+        [Fact]
+        public void GetRenamedModel()
+        {
+            var clientType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ClientRenamedModel");
+            Assert.NotNull(clientType);
+
+            var serverType = Type.GetType("Demo.Client.GenerateModel.WebApiProxy.ServerRenamedModel");
+            Assert.Null(serverType);
+
+            var clientDataMember = clientType.GetProperty("ClientDataMemberName");
+            Assert.NotNull(clientDataMember);
+
+            var serverDataMember = clientType.GetProperty("ServerDataMemberName");
+            Assert.Null(serverDataMember);
+
+            var clientJson = clientType.GetProperty("ClientJsonName");
+            Assert.NotNull(clientJson);
+
+            var serverJson = clientType.GetProperty("ServerJsonName");
+            Assert.Null(serverJson);
         }
     }
 }

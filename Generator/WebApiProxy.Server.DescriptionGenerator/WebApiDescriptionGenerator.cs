@@ -239,7 +239,7 @@ namespace WebApiProxy.Server.MetadataGenerator
             }
             else
             {
-                typeName = type.Name;
+                typeName = GetTypeName(type);
                 AddModelDescription(type);
             }
            
@@ -267,7 +267,7 @@ namespace WebApiProxy.Server.MetadataGenerator
 
             var modelDescription = new ModelDescription
             {
-                Name = type.Name,
+                Name = GetTypeName(type),
                 IsAbstract = type.IsAbstract,
                 IsValueType = type.IsValueType,
                 Documentation = _modelDocumentationProvider.GetDocumentation(type)
@@ -292,7 +292,7 @@ namespace WebApiProxy.Server.MetadataGenerator
 
                 var modelProperty = new ModelPropertyDescription
                 {
-                    Name = property.Name,
+                    Name = GetPropertyName(property, hasDataContractAttribute),
                     Documentation = _modelDocumentationProvider.GetDocumentation(property),
                     Type = ParseTypeName(property.PropertyType),
                     AttributeDescriptions = GetAttributeDescriptions(property),
@@ -308,6 +308,18 @@ namespace WebApiProxy.Server.MetadataGenerator
             }
 
             modelDescription.PropertyDescriptions = modelProperties;
+        }
+
+        private string GetTypeName(Type type)
+        {
+            var dataContract = type.GetCustomAttribute<DataContractAttribute>();
+
+            if (dataContract != null && !string.IsNullOrEmpty(dataContract.Name))
+            {
+                return dataContract.Name;
+            }
+
+            return type.Name;
         }
 
         private List<AttributeDescription> GetAttributeDescriptions(PropertyInfo property)
@@ -390,6 +402,26 @@ namespace WebApiProxy.Server.MetadataGenerator
             }
 
             return result;
+        }
+
+        private string GetPropertyName(PropertyInfo property, bool hasDataContractAttribute)
+        {
+            JsonPropertyAttribute jsonProperty = property.GetCustomAttribute<JsonPropertyAttribute>();
+            if (jsonProperty != null && !string.IsNullOrEmpty(jsonProperty.PropertyName))
+            {
+                return jsonProperty.PropertyName;
+            }
+
+            if (hasDataContractAttribute)
+            {
+                DataMemberAttribute dataMember = property.GetCustomAttribute<DataMemberAttribute>();
+                if (dataMember != null && !string.IsNullOrEmpty(dataMember.Name))
+                {
+                    return dataMember.Name;
+                }
+            }
+
+            return property.Name;
         }
 
         private void AddEnumDescription(Type type)
