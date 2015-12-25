@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>CrossPlatform.WebApiProxy.Common</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <authors>Denis Tsvettsih</authors>
         <owners>denist</owners>
         <projectUrl>https://github.com/denis-tsv/CrossPlatform.WebApiProxy</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Contains data model and annotations for generating description of ASP.NET MVC WebAPI</description>
+        <description>Contains attributes and data model classes for generating description of ASP.NET MVC WebAPI</description>
         <tags>WebApi</tags>
     </metadata>
     <files>

@@ -5,6 +5,7 @@
     <string>Demo.Model</string>
   </AdditionalNamespaces>
   <GenerateModel>false</GenerateModel>
+  <GenerateAttributes>false</GenerateAttributes>
   <Suffix>Client</Suffix>
   <Namespace>Demo.Client.UseSharedModel.WebApiProxy</Namespace>
   <BaseProxyClass>Demo.Client.UseSharedModel.WebApiProxy.ControllerClient</BaseProxyClass>

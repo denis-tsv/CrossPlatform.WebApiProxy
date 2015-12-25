@@ -114,12 +114,12 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="WebApiProxy.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.Common.1.0.0\lib\portable-net4+sl5+wp8+win8\WebApiProxy.Common.dll</HintPath>
+    <Reference Include="WebApiProxy.Common, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.Common.1.0.1\lib\portable-net4+sl5+wp8+win8\WebApiProxy.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebApiProxy.Server.MetadataGenerator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.DescriptionGenerator.1.0.0\lib\net45\WebApiProxy.Server.MetadataGenerator.dll</HintPath>
+    <Reference Include="WebApiProxy.Server.MetadataGenerator, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CrossPlatform.WebApiProxy.DescriptionGenerator.1.0.1\lib\net45\WebApiProxy.Server.MetadataGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

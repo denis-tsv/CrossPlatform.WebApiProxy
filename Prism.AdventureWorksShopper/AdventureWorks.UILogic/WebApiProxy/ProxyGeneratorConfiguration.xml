@@ -6,6 +6,8 @@
     <string>System.Net.Http</string>
   </AdditionalNamespaces>
   <GenerateModel>false</GenerateModel>
+  <GenerateAttributes>false</GenerateAttributes>
+  <ImplementINotifyPropertyChanged>false</ImplementINotifyPropertyChanged>
   <Suffix>Client</Suffix>
   <Namespace>AdventureWorks.UILogic.WebApiProxy</Namespace>
   <BaseProxyClass>AdventureWorks.UILogic.WebApiProxy.ControllerClient</BaseProxyClass>

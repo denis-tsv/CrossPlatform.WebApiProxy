@@ -18,7 +18,7 @@ namespace AdventureWorks.UILogic.WebApiProxy
     public abstract class ControllerClient : IControllerClient
     {
         private static readonly Dictionary<Type, PropertyInfo[]> PropertiesDictionary = new Dictionary<Type, PropertyInfo[]>();
-        public HttpClient HttpClient { get; set; }
+        public HttpClient HttpClient { get; protected set; }
 
         protected ControllerClient(HttpClientHandler handler, Uri baseUri)
         {

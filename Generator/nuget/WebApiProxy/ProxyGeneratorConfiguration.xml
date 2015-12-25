@@ -4,6 +4,7 @@
   <AdditionalNamespaces>
   </AdditionalNamespaces>
   <GenerateModel>true</GenerateModel>
+  <GenerateAttributes>true</GenerateAttributes>
   <ImplementINotifyPropertyChanged>true</ImplementINotifyPropertyChanged>
   <Suffix>Client</Suffix>
   <Namespace>WebApiProxy</Namespace>

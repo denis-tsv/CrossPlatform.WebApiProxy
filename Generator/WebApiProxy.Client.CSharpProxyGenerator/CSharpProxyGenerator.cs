@@ -59,8 +59,11 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine("using System.Collections.Generic;"); 
             sb.AppendLine("using System.Collections.ObjectModel;");
             sb.AppendLine("using System.Threading.Tasks;"); 
-            sb.AppendLine("using System.ComponentModel;"); 
-            sb.AppendLine("using System.ComponentModel.DataAnnotations;");
+            sb.AppendLine("using System.ComponentModel;");
+            if (_proxyGeneratorConfiguration.GenerateModel && _proxyGeneratorConfiguration.GenerateAttributes)
+            {
+                sb.AppendLine("using System.ComponentModel.DataAnnotations;");
+            }
             sb.AppendLine();
 
             if (_proxyGeneratorConfiguration.AdditionalNamespaces != null)
@@ -196,7 +199,10 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
             AddDocumentation(sb, property.Documentation, tabs);
 
-            AddAttributes(sb, property.AttributeDescriptions, tabs);
+            if (_proxyGeneratorConfiguration.GenerateAttributes)
+            {
+                AddAttributes(sb, property.AttributeDescriptions, tabs);
+            }
 
             sb.Append(tabs, $"public {virtualValue} {property.Type} {property.Name} ");
             if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged)

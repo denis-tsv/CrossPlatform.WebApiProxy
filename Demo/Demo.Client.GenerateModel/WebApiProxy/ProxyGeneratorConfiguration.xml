@@ -5,6 +5,7 @@
     <string>Demo.Model</string>
   </AdditionalNamespaces>
   <GenerateModel>true</GenerateModel>
+  <GenerateAttributes>true</GenerateAttributes>
   <ImplementINotifyPropertyChanged>true</ImplementINotifyPropertyChanged>
   <Suffix>Client</Suffix>
   <Namespace>Demo.Client.GenerateModel.WebApiProxy</Namespace>
