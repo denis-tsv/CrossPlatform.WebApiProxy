@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -293,7 +294,8 @@ namespace WebApiProxy.Server.MetadataGenerator
                 {
                     Name = property.Name,
                     Documentation = _modelDocumentationProvider.GetDocumentation(property),
-                    Type = ParseTypeName(property.PropertyType)
+                    Type = ParseTypeName(property.PropertyType),
+                    AttributeDescriptions = GetAttributeDescriptions(property),
                 };
 
                 var formatAttribure = property.GetCustomAttribute<ProxyFormatAttribute>();
@@ -306,6 +308,88 @@ namespace WebApiProxy.Server.MetadataGenerator
             }
 
             modelDescription.PropertyDescriptions = modelProperties;
+        }
+
+        private List<AttributeDescription> GetAttributeDescriptions(PropertyInfo property)
+        {
+            var result = new List<AttributeDescription>();
+
+            var requtedAttribute = property.GetCustomAttribute<RequiredAttribute>();
+            if (requtedAttribute != null)
+            {
+                var attrDescription = new AttributeDescription
+                {
+                    Name = "Required"
+                };
+                result.Add(attrDescription);
+            }
+
+            var rangeAttribute = property.GetCustomAttribute<RangeAttribute>();
+            if (rangeAttribute != null)
+            {
+                var attrDescription = new AttributeDescription
+                {
+                    Name = "Range",
+                    ConstructorParameters = new List<string>
+                    {
+                        Convert.ToString(rangeAttribute.Minimum, CultureInfo.InvariantCulture),
+                        Convert.ToString(rangeAttribute.Maximum, CultureInfo.InvariantCulture),
+                    }
+                };
+                result.Add(attrDescription);
+            }
+
+            var maxLengthAttribute = property.GetCustomAttribute<MaxLengthAttribute>();
+            if (maxLengthAttribute != null)
+            {
+                var attrDescription = new AttributeDescription
+                {
+                    Name = "MaxLength",
+                    ConstructorParameters = new List<string>
+                    {
+                        maxLengthAttribute.Length.ToString(),
+                    }
+                };
+                result.Add(attrDescription);
+            }
+
+            var minLengthAttribute = property.GetCustomAttribute<MinLengthAttribute>();
+            if (minLengthAttribute != null)
+            {
+                var attrDescription = new AttributeDescription
+                {
+                    Name = "MinLength",
+                    ConstructorParameters = new List<string>
+                    {
+                        minLengthAttribute.Length.ToString(),
+                    }
+                };
+                result.Add(attrDescription);
+            }
+
+            var stringLengthAttribute = property.GetCustomAttribute<StringLengthAttribute>();
+            if (stringLengthAttribute != null)
+            {
+                var attrDescription = new AttributeDescription
+                {
+                    Name = "StringLength",
+                    ConstructorParameters = new List<string>
+                    {
+                        stringLengthAttribute.MaximumLength.ToString(),
+                    },
+                };
+                if (stringLengthAttribute.MinimumLength != 0)
+                {
+                    attrDescription.Properties.Add(new NameValue
+                    {
+                        Name = "MinimumLength",
+                        Value = stringLengthAttribute.MinimumLength.ToString()
+                    });
+                }
+                result.Add(attrDescription);
+            }
+
+            return result;
         }
 
         private void AddEnumDescription(Type type)

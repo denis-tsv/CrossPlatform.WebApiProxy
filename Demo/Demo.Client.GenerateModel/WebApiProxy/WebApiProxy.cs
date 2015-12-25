@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 // additional namespaces
 using Demo.Model;
@@ -56,6 +57,113 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 				{
 					_code = value;
 					OnPropertyChanged("Code");
+				}
+			}
+		}
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	public  partial class MetadataModel : INotifyPropertyChanged
+	{
+		private string _requred;
+		private int _intRange;
+		private int _doubleRange;
+		private string _maxLength;
+		private string _minLength;
+		private string _stringLength;
+		private string _stringLengthWithMinimum;
+		[Required]
+		public virtual string Requred 
+		{
+			get { return _requred; }
+			set
+			{
+				if (!_requred.Equals(value))
+				{
+					_requred = value;
+					OnPropertyChanged("Requred");
+				}
+			}
+		}
+		[Range(1, 100)]
+		public virtual int IntRange 
+		{
+			get { return _intRange; }
+			set
+			{
+				if (!_intRange.Equals(value))
+				{
+					_intRange = value;
+					OnPropertyChanged("IntRange");
+				}
+			}
+		}
+		[Range(0.5, 1)]
+		public virtual int DoubleRange 
+		{
+			get { return _doubleRange; }
+			set
+			{
+				if (!_doubleRange.Equals(value))
+				{
+					_doubleRange = value;
+					OnPropertyChanged("DoubleRange");
+				}
+			}
+		}
+		[MaxLength(1024)]
+		public virtual string MaxLength 
+		{
+			get { return _maxLength; }
+			set
+			{
+				if (!_maxLength.Equals(value))
+				{
+					_maxLength = value;
+					OnPropertyChanged("MaxLength");
+				}
+			}
+		}
+		[MinLength(32)]
+		public virtual string MinLength 
+		{
+			get { return _minLength; }
+			set
+			{
+				if (!_minLength.Equals(value))
+				{
+					_minLength = value;
+					OnPropertyChanged("MinLength");
+				}
+			}
+		}
+		[StringLength(1024)]
+		public virtual string StringLength 
+		{
+			get { return _stringLength; }
+			set
+			{
+				if (!_stringLength.Equals(value))
+				{
+					_stringLength = value;
+					OnPropertyChanged("StringLength");
+				}
+			}
+		}
+		[StringLength(100, MinimumLength = 1)]
+		public virtual string StringLengthWithMinimum 
+		{
+			get { return _stringLengthWithMinimum; }
+			set
+			{
+				if (!_stringLengthWithMinimum.Equals(value))
+				{
+					_stringLengthWithMinimum = value;
+					OnPropertyChanged("StringLengthWithMinimum");
 				}
 			}
 		}
@@ -608,6 +716,21 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			url = url.Replace("{id}", ConvertToString(id) );
 
 			return PutNoResultAsync(url, user);
+		}
+	}
+	public interface ITestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
+	{
+		Task<MetadataModel> GetMetadataModelAsync();
+	}
+	public class TestMetadataClient : Demo.Client.GenerateModel.WebApiProxy.ControllerClient, ITestMetadataClient
+	{
+		public TestMetadataClient(Uri baseUrl) : base(baseUrl)
+		{ }
+		public Task<MetadataModel> GetMetadataModelAsync()
+		{
+			var url = "api/TestMetadata/GetMetadataModel";
+
+			return GetAsync<MetadataModel>(url);
 		}
 	}
 	public interface ITestPostMethodClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient

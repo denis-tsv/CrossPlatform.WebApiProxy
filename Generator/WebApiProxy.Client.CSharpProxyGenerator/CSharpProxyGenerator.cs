@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using WebApiProxy.Common.Model;
 
@@ -58,7 +59,8 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             sb.AppendLine("using System.Collections.Generic;"); 
             sb.AppendLine("using System.Collections.ObjectModel;");
             sb.AppendLine("using System.Threading.Tasks;"); 
-            sb.AppendLine("using System.ComponentModel;");
+            sb.AppendLine("using System.ComponentModel;"); 
+            sb.AppendLine("using System.ComponentModel.DataAnnotations;");
             sb.AppendLine();
 
             if (_proxyGeneratorConfiguration.AdditionalNamespaces != null)
@@ -194,6 +196,8 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
 
             AddDocumentation(sb, property.Documentation, tabs);
 
+            AddAttributes(sb, property.AttributeDescriptions, tabs);
+
             sb.Append(tabs, $"public {virtualValue} {property.Type} {property.Name} ");
             if (_proxyGeneratorConfiguration.ImplementINotifyPropertyChanged)
             {
@@ -214,6 +218,30 @@ namespace WebApiProxy.Client.CSharpProxyGenerator
             else
             {
                 sb.AppendLine("{ get; set; }");
+            }
+        }
+
+        private void AddAttributes(StringBuilder sb, List<AttributeDescription> attributes, int tabs)
+        {
+            foreach (var attribute in attributes)
+            {
+                bool hasBraskets = attribute.ConstructorParameters.Any() || attribute.Properties.Any();
+
+                sb.Append(tabs, "[");
+                sb.Append(attribute.Name);
+                if (hasBraskets) sb.Append("(");
+
+                sb.Append(string.Join(", ", attribute.ConstructorParameters));
+
+                if (attribute.ConstructorParameters.Any() && attribute.Properties.Any())
+                {
+                    sb.Append(", ");
+                }
+
+                sb.Append(string.Join(", ", attribute.Properties.Select(nv => $"{nv.Name} = {nv.Value}")));
+
+                if (hasBraskets) sb.Append(")");
+                sb.AppendLine("]");
             }
         }
 

@@ -166,6 +166,7 @@
     <Compile Include="Controllers\TestDeleteMethodController.cs" />
     <Compile Include="Controllers\TestDocumentationController.cs" />
     <Compile Include="Controllers\TestGetMethodController.cs" />
+    <Compile Include="Controllers\TestMetadataController.cs" />
     <Compile Include="Controllers\TestPostMethodController.cs" />
     <Compile Include="Controllers\TestPutMethodController.cs" />
     <Compile Include="Global.asax.cs">
@@ -174,6 +175,7 @@
     <Compile Include="Models\DataContractEnumModel.cs" />
     <Compile Include="Models\DataContractModel.cs" />
     <Compile Include="Models\IgnoredModel.cs" />
+    <Compile Include="Models\MetadataModel.cs" />
     <Compile Include="Models\ModelWithIgnoredProperties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
