@@ -26,10 +26,16 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			}
 		}
 	}
+	/// <summary>
+	/// Class documentation
+	/// </summary>
 	public abstract partial class LayerSupertype : INotifyPropertyChanged
 	{
 		private int _id;
 		private string _code;
+		/// <summary>
+		/// Property documentation
+		/// </summary>
 		public virtual int Id 
 		{
 			get { return _id; }
@@ -586,6 +592,9 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
+	/// <summary>
+	/// Struct documentation
+	/// </summary>
 	public  partial struct MyPointStruct : INotifyPropertyChanged
 	{
 		private int _x;
@@ -695,8 +704,14 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 	{
 		HasEnumMember = 0,
 	}
+	/// <summary>
+	/// Enum documentation
+	/// </summary>
 	public enum EnumModel
 	{
+		/// <summary>
+		/// Enum value documentation
+		/// </summary>
 		Value1 = 1024,
 		Value2 = 1025,
 	}
@@ -836,8 +851,19 @@ namespace Demo.Client.GenerateModel.WebApiProxy
 			return GetAsync<DataContractEnumModel>(url);
 		}
 	}
+	/// <summary>
+	/// Controller documentation
+	/// multiline
+	/// </summary>
 	public interface ITestDocumentationClient : Demo.Client.GenerateModel.WebApiProxy.IControllerClient
 	{
+		/// <summary>
+		/// Method documentation
+		/// multiline
+		/// </summary>
+		/// <param name="urlParam">Url parameter documentation</param>
+		/// <param name="bodyParam">Body parameter documentation</param>
+		/// <returns>Return value documentation</returns>
 		Task<string> PostWithDocumentationAsync(string urlParam, string bodyParam);
 		Task<string> PostWithEmptyDocumentationAsync(string doc);
 	}

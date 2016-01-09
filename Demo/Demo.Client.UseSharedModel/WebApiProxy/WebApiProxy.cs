@@ -145,8 +145,19 @@ namespace Demo.Client.UseSharedModel.WebApiProxy
 			return GetAsync<DataContractEnumModel>(url);
 		}
 	}
+	/// <summary>
+	/// Controller documentation
+	/// multiline
+	/// </summary>
 	public interface ITestDocumentationClient : Demo.Client.UseSharedModel.WebApiProxy.IControllerClient
 	{
+		/// <summary>
+		/// Method documentation
+		/// multiline
+		/// </summary>
+		/// <param name="urlParam">Url parameter documentation</param>
+		/// <param name="bodyParam">Body parameter documentation</param>
+		/// <returns>Return value documentation</returns>
 		Task<string> PostWithDocumentationAsync(string urlParam, string bodyParam);
 		Task<string> PostWithEmptyDocumentationAsync(string doc);
 	}
